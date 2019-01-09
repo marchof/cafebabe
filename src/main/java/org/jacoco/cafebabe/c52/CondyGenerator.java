@@ -1,0 +1,55 @@
+package org.jacoco.cafebabe.c52;
+
+import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
+import static org.objectweb.asm.Opcodes.ARETURN;
+import static org.objectweb.asm.Opcodes.H_INVOKESTATIC;
+import static org.objectweb.asm.Opcodes.V11;
+
+import java.lang.invoke.MethodHandles;
+import java.time.LocalDate;
+
+import org.jacoco.cafebabe.util.GeneratorSupport;
+import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.ConstantDynamic;
+import org.objectweb.asm.Handle;
+import org.objectweb.asm.MethodVisitor;
+
+/**
+ * Creates a class which uses a dynamic constant.
+ */
+public class CondyGenerator {
+
+	public static byte[] create() {
+		ClassWriter writer = new ClassWriter(0);
+		create(writer);
+		return writer.toByteArray();
+	}
+
+	public static void create(ClassVisitor cv) {
+
+		cv.visit(V11, ACC_PUBLIC, "Condy", null, "java/lang/Object", new String[] { "java/util/function/Supplier" });
+
+		GeneratorSupport.defaultInit(cv);
+
+		MethodVisitor mv = cv.visitMethod(ACC_PUBLIC, "get", "()Ljava/lang/Object;", null, null);
+		mv.visitCode();
+		mv.visitLdcInsn(new ConstantDynamic("foo", "Ljava/time/LocalDate;", HANDLE));
+		mv.visitInsn(ARETURN);
+		mv.visitMaxs(1, 1);
+		mv.visitEnd();
+
+		cv.visitEnd();
+	}
+
+	/**
+	 * The bootstrap method used at runtime to calculate the constant.
+	 */
+	public static LocalDate bootstrap(MethodHandles.Lookup lookup, String name, Class<?> type) {
+		return LocalDate.now();
+	}
+
+	private static Handle HANDLE = new Handle(H_INVOKESTATIC, "org/jacoco/cafebabe/c52/CondyGenerator", "bootstrap",
+			"(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/Class;)Ljava/time/LocalDate;", false);
+
+}
