@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Test;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.util.CheckClassAdapter;
 
-public class CondyGeneratorTest {
+class CondyGeneratorTest {
 
 	private MemoryClassLoader cl;
 
 	@BeforeEach
-	public void before() {
+	void before() {
 		cl = new MemoryClassLoader();
 	}
 
 	@Test
-	public void should_return_dynamically_created_constant() throws Exception {
+	void should_return_dynamically_created_constant() throws Exception {
 		cl.add(CondyGenerator.create());
 
 		Supplier<Object> supplier = cl.newInstance("Condy");
@@ -30,7 +30,7 @@ public class CondyGeneratorTest {
 	}
 
 	@Test
-	public void generator_should_use_event_APIs_correctly() {
+	void generator_should_use_event_APIs_correctly() {
 		CondyGenerator.create(new CheckClassAdapter(new ClassWriter(0)));
 	}
 

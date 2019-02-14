@@ -10,17 +10,17 @@ import org.junit.jupiter.api.Test;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.util.CheckClassAdapter;
 
-public class HelloSupplierGeneratorTest {
+class HelloSupplierGeneratorTest {
 
 	private MemoryClassLoader cl;
 
 	@BeforeEach
-	public void before() {
+	void before() {
 		cl = new MemoryClassLoader();
 	}
 
 	@Test
-	public void get_should_return_hello() throws Exception {
+	void get_should_return_hello() throws Exception {
 		cl.add(HelloSupplierGenerator.create());
 
 		Supplier<Object> supplier = cl.newInstance("HelloSupplier");
@@ -29,7 +29,7 @@ public class HelloSupplierGeneratorTest {
 	}
 
 	@Test
-	public void generator_should_use_event_APIs_correctly() {
+	void generator_should_use_event_APIs_correctly() {
 		HelloSupplierGenerator.create(new CheckClassAdapter(new ClassWriter(0)));
 	}
 

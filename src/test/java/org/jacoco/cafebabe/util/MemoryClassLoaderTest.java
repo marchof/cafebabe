@@ -11,17 +11,17 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.objectweb.asm.ClassWriter;
 
-public class MemoryClassLoaderTest {
+class MemoryClassLoaderTest {
 
 	private MemoryClassLoader cl;
 
 	@BeforeEach
-	public void before() {
+	void before() {
 		cl = new MemoryClassLoader();
 	}
 
 	@Test
-	public void should_load_added_class() throws Exception {
+	void should_load_added_class() throws Exception {
 		ClassWriter cw = new ClassWriter(0);
 		cw.visit(V11, ACC_PUBLIC, "Foo", null, "java/lang/Object", null);
 
@@ -32,21 +32,21 @@ public class MemoryClassLoaderTest {
 	}
 
 	@Test
-	public void should_load_class_from_parent_loader() throws Exception {
+	void should_load_class_from_parent_loader() throws Exception {
 		Class<?> clazz = cl.loadClass("java.lang.String");
 
 		assertEquals("java.lang.String", clazz.getName());
 	}
 
 	@Test
-	public void should_create_instance() throws Exception {
+	void should_create_instance() throws Exception {
 		Object instance = cl.newInstance("java.util.ArrayList");
 
 		assertEquals(ArrayList.class, instance.getClass());
 	}
 
 	@Test
-	public void should_throw_exception_when_class_does_not_exist() throws Exception {
+	void should_throw_exception_when_class_does_not_exist() throws Exception {
 		assertThrows(ClassNotFoundException.class, () -> cl.loadClass("does.not.Exist"));
 	}
 

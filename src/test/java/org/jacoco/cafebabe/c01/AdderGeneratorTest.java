@@ -8,17 +8,17 @@ import org.junit.jupiter.api.Test;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.util.CheckClassAdapter;
 
-public class AdderGeneratorTest {
+class AdderGeneratorTest {
 
 	private MemoryClassLoader cl;
 
 	@BeforeEach
-	public void before() {
+	void before() {
 		cl = new MemoryClassLoader();
 	}
 
 	@Test
-	public void add_should_add_two_integers() throws Exception {
+	void add_should_add_two_integers() throws Exception {
 		cl.add(AdderGenerator.create());
 
 		Class<?> clazz = cl.loadClass("Adder");
@@ -28,7 +28,7 @@ public class AdderGeneratorTest {
 	}
 
 	@Test
-	public void generator_should_use_event_APIs_correctly() {
+	void generator_should_use_event_APIs_correctly() {
 		AdderGenerator.create(new CheckClassAdapter(new ClassWriter(0)));
 	}
 

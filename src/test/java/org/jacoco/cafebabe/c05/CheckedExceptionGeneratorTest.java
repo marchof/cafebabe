@@ -10,17 +10,17 @@ import org.junit.jupiter.api.Test;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.util.CheckClassAdapter;
 
-public class CheckedExceptionGeneratorTest {
+class CheckedExceptionGeneratorTest {
 
 	private MemoryClassLoader cl;
 
 	@BeforeEach
-	public void before() {
+	void before() {
 		cl = new MemoryClassLoader();
 	}
 
 	@Test
-	public void run_should_throw_checked_exception() throws Exception {
+	void run_should_throw_checked_exception() throws Exception {
 		cl.add(CheckedExceptionGenerator.create());
 
 		Runnable runnable = cl.newInstance("CheckedExceptionRunnable");
@@ -29,7 +29,7 @@ public class CheckedExceptionGeneratorTest {
 	}
 
 	@Test
-	public void generator_should_use_event_APIs_correctly() {
+	void generator_should_use_event_APIs_correctly() {
 		CheckedExceptionGenerator.create(new CheckClassAdapter(new ClassWriter(0)));
 	}
 
