@@ -16,6 +16,10 @@ import org.objectweb.asm.MethodVisitor;
 /**
  * Creates a {@link java.util.function.Function} implementation that accepts {@link Supplier} and
  * calls its {@link Supplier#get()} method.
+ *
+ * @see <a href=
+ *      "https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.invokeinterface">JVM
+ *      Spec 6.5.invokeinterface</a>
  */
 public class InvokeInterfaceGenerator {
 
