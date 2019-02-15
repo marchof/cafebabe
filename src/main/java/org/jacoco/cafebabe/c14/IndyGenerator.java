@@ -21,38 +21,38 @@ import org.objectweb.asm.MethodVisitor;
  */
 public class IndyGenerator {
 
-  static MutableCallSite callSite = new MutableCallSite(MethodHandles.constant(String.class, "Hello"));
+	static MutableCallSite callSite = new MutableCallSite(MethodHandles.constant(String.class, "Hello"));
 
-  public static byte[] create() {
-    ClassWriter writer = new ClassWriter(0);
-    create(writer);
-    return writer.toByteArray();
-  }
+	public static byte[] create() {
+		ClassWriter writer = new ClassWriter(0);
+		create(writer);
+		return writer.toByteArray();
+	}
 
-  public static void create(ClassVisitor cv) {
+	public static void create(ClassVisitor cv) {
 
-    cv.visit(V11, ACC_PUBLIC, "Indy", null, "java/lang/Object", new String[]{"java/util/function/Supplier"});
+		cv.visit(V11, ACC_PUBLIC, "Indy", null, "java/lang/Object", new String[]{"java/util/function/Supplier"});
 
-    GeneratorSupport.defaultInit(cv);
+		GeneratorSupport.defaultInit(cv);
 
-    MethodVisitor mv = cv.visitMethod(ACC_PUBLIC, "get", "()Ljava/lang/Object;", null, null);
-    mv.visitCode();
+		MethodVisitor mv = cv.visitMethod(ACC_PUBLIC, "get", "()Ljava/lang/Object;", null, null);
+		mv.visitCode();
 
-    Handle handle = new Handle(H_INVOKESTATIC, "org/jacoco/cafebabe/c14/IndyGenerator", "bootstrap",
-      "(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;", false);
-    mv.visitInvokeDynamicInsn("get", "()Ljava/lang/String;", handle);
-    mv.visitInsn(ARETURN);
-    mv.visitMaxs(1, 1);
-    mv.visitEnd();
+		Handle handle = new Handle(H_INVOKESTATIC, "org/jacoco/cafebabe/c14/IndyGenerator", "bootstrap",
+			"(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;", false);
+		mv.visitInvokeDynamicInsn("get", "()Ljava/lang/String;", handle);
+		mv.visitInsn(ARETURN);
+		mv.visitMaxs(1, 1);
+		mv.visitEnd();
 
-    cv.visitEnd();
-  }
+		cv.visitEnd();
+	}
 
-  /**
-   * The bootstrap method used at runtime to link dynamic call site.
-   */
-  public static CallSite bootstrap(MethodHandles.Lookup caller, String name, MethodType type) {
-    return callSite;
-  }
+	/**
+	 * The bootstrap method used at runtime to link dynamic call site.
+	 */
+	public static CallSite bootstrap(MethodHandles.Lookup caller, String name, MethodType type) {
+		return callSite;
+	}
 
 }
