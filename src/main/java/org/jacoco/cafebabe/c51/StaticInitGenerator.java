@@ -19,29 +19,29 @@ import org.objectweb.asm.Opcodes;
  */
 public class StaticInitGenerator {
 
-  public static byte[] create() {
-    ClassWriter writer = new ClassWriter(0);
-    create(writer);
-    return writer.toByteArray();
-  }
+	public static byte[] create() {
+		ClassWriter writer = new ClassWriter(0);
+		create(writer);
+		return writer.toByteArray();
+	}
 
-  public static void create(ClassVisitor cv) {
-    cv.visit(V11, ACC_PUBLIC, "Constants", null, "java/lang/Object", null);
+	public static void create(ClassVisitor cv) {
+		cv.visit(V11, ACC_PUBLIC, "Constants", null, "java/lang/Object", null);
 
-    cv.visitField(ACC_PUBLIC | ACC_STATIC | ACC_FINAL, "CONST", "Ljava/lang/Object;", null, null);
+		cv.visitField(ACC_PUBLIC | ACC_STATIC | ACC_FINAL, "CONST", "Ljava/lang/Object;", null, null);
 
-    MethodVisitor mv = cv.visitMethod(ACC_PUBLIC | ACC_STATIC, "<clinit>", "()V", null, null);
-    mv.visitCode();
-    mv.visitTypeInsn(NEW, "java/lang/Object");
-    mv.visitInsn(Opcodes.DUP);
-    mv.visitMethodInsn(INVOKESPECIAL, "java/lang/Object", "<init>",
-      "()V", false);
-    mv.visitFieldInsn(PUTSTATIC, "Constants", "CONST", "Ljava/lang/Object;");
-    mv.visitInsn(RETURN);
-    mv.visitMaxs(2, 0);
-    mv.visitEnd();
+		MethodVisitor mv = cv.visitMethod(ACC_PUBLIC | ACC_STATIC, "<clinit>", "()V", null, null);
+		mv.visitCode();
+		mv.visitTypeInsn(NEW, "java/lang/Object");
+		mv.visitInsn(Opcodes.DUP);
+		mv.visitMethodInsn(INVOKESPECIAL, "java/lang/Object", "<init>",
+			"()V", false);
+		mv.visitFieldInsn(PUTSTATIC, "Constants", "CONST", "Ljava/lang/Object;");
+		mv.visitInsn(RETURN);
+		mv.visitMaxs(2, 0);
+		mv.visitEnd();
 
-    cv.visitEnd();
-  }
+		cv.visitEnd();
+	}
 
 }
