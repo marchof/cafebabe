@@ -1,12 +1,12 @@
 package org.jacoco.cafebabe.c51;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import org.jacoco.cafebabe.util.MemoryClassLoader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.util.CheckClassAdapter;
-
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class StaticInitGeneratorTest {
 
@@ -18,7 +18,7 @@ class StaticInitGeneratorTest {
 	}
 
 	@Test
-	void run_have_constant_fields() throws Exception {
+	void should_have_constant_field() throws Exception {
 		cl.add(StaticInitGenerator.create());
 		Class<?> clazz = cl.loadClass("Constants");
 

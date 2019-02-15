@@ -18,7 +18,7 @@ class ConstantsGeneratorTest {
 	}
 
 	@Test
-	void run_have_constant_fields() throws Exception {
+	void should_have_constant_fields() throws Exception {
 		cl.add(ConstantsGenerator.create());
 		Class<?> clazz = cl.loadClass("Constants");
 
