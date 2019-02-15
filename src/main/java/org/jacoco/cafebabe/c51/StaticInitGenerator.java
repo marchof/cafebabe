@@ -16,6 +16,13 @@ import org.objectweb.asm.Opcodes;
 
 /**
  * Creates a class with constant field initialized with an static initializer.
+ * 
+ * @see <a href=
+ *      "https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-2.html#jvms-2.9.2">JVM
+ *      Spec 2.9.2</a>
+ * @see <a href=
+ *      "https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-5.html#jvms-5.5">JVM
+ *      Spec 5.5</a>
  */
 public class StaticInitGenerator {
 

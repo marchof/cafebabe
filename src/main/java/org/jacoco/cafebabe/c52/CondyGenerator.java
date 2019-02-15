@@ -17,6 +17,13 @@ import org.objectweb.asm.MethodVisitor;
 
 /**
  * Creates a class which uses a dynamic constant.
+ * 
+ * @see <a href=
+ *      "https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-4.html#jvms-4.4.10">JVM
+ *      Spec 4.4.10</a>
+ * @see <a href=
+ *      "https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-6.html#jvms-6.5.ldc">JVM
+ *      Spec 6.5.ldc</a>
  */
 public class CondyGenerator {
 

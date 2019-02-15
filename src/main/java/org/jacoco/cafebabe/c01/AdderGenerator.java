@@ -17,6 +17,10 @@ import org.objectweb.asm.MethodVisitor;
  * <pre>
  * public static int add(int a, int b);
  * </pre>
+ * 
+ * @see <a href=
+ *      "https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-4.html#jvms-4.6">JVM
+ *      Spec 4.6</a>
  */
 public class AdderGenerator {
 

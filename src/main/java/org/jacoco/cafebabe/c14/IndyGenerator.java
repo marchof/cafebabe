@@ -17,7 +17,16 @@ import org.objectweb.asm.Handle;
 import org.objectweb.asm.MethodVisitor;
 
 /**
- * Creates a class which uses a dynamic call site (an invokedynamic instruction).
+ * Creates a class which uses a dynamic call site (an invokedynamic
+ * instruction).
+ * 
+ * 
+ * @see <a href=
+ *      "https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-4.html#jvms-4.4.10">JVM
+ *      Spec 4.4.10</a>
+ * @see <a href=
+ *      "https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-6.html#jvms-6.5.invokedynamic">JVM
+ *      Spec 6.5.invokedynamic</a>
  */
 public class IndyGenerator {
 

@@ -20,6 +20,16 @@ import org.objectweb.asm.MethodVisitor;
 /**
  * Creates a counting <code>IntSupplier</code> which holds the current counter
  * value as an instance field.
+ * 
+ * @see <a href=
+ *      "https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-4.html#jvms-4.5">JVM
+ *      Spec 4.5</a>
+ * @see <a href=
+ *      "https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-6.html#jvms-6.5.getfield">JVM
+ *      Spec 6.5.getfield</a>
+ * @see <a href=
+ *      "https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-6.html#jvms-6.5.putfield">JVM
+ *      Spec 6.5.putfield</a>
  */
 public class CounterGenerator {
 

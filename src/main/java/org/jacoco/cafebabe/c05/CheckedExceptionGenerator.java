@@ -15,6 +15,13 @@ import org.objectweb.asm.MethodVisitor;
 /**
  * Creates a <code>Runnable</code> implementation which throws a checked
  * exception.
+ * 
+ * @see <a href=
+ *      "https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-2.html#jvms-2.10">JVM
+ *      Spec 2.10</a>
+ * @see <a href=
+ *      "https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-6.html#jvms-6.5.athrow">JVM
+ *      Spec 6.5.athrow</a>
  */
 public class CheckedExceptionGenerator {
 

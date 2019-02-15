@@ -10,6 +10,13 @@ import org.objectweb.asm.ClassWriter;
 
 /**
  * Creates a class with constant fields with initial values.
+ * 
+ * @see <a href=
+ *      "https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-4.html#jvms-4.5">JVM
+ *      Spec 4.5</a>
+ * @see <a href=
+ *      "https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-4.html#jvms-4.7.2">JVM
+ *      Spec 4.7.2</a>
  */
 public class ConstantsGenerator {
 

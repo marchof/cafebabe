@@ -14,6 +14,10 @@ import org.objectweb.asm.MethodVisitor;
 /**
  * Creates a simple class implementing the interface
  * <code>java.util.function.Supplier</code>.
+ * 
+ * @see <a href=
+ *      "https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-4.html#jvms-4.1">JVM
+ *      Spec 4.1</a>
  */
 public class HelloSupplierGenerator {
 
