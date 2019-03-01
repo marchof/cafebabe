@@ -2,7 +2,7 @@ package org.jacoco.cafebabe.a01;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.jacoco.cafebabe.util.ClassDefinition;
+import org.jacoco.cafebabe.test.ClassDefinition;
 import org.junit.jupiter.api.Test;
 
 public class LOCCounterTest {

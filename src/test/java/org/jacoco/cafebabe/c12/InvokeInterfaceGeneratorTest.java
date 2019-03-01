@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import org.jacoco.cafebabe.util.MemoryClassLoader;
+import org.jacoco.cafebabe.test.MemoryClassLoader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.objectweb.asm.ClassWriter;

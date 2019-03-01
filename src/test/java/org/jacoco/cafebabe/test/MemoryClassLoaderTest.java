@@ -1,4 +1,4 @@
-package org.jacoco.cafebabe.util;
+package org.jacoco.cafebabe.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;

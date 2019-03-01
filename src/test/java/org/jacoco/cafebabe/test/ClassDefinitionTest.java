@@ -1,4 +1,4 @@
-package org.jacoco.cafebabe.util;
+package org.jacoco.cafebabe.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -14,7 +14,7 @@ public class ClassDefinitionTest {
 		assertNotNull(definition);
 
 		ClassReader reader = new ClassReader(definition);
-		assertEquals("org/jacoco/cafebabe/util/ClassDefinitionTest", reader.getClassName());
+		assertEquals("org/jacoco/cafebabe/test/ClassDefinitionTest", reader.getClassName());
 	}
 
 	class Inner {
@@ -26,7 +26,7 @@ public class ClassDefinitionTest {
 		assertNotNull(definition);
 
 		ClassReader reader = new ClassReader(definition);
-		assertEquals("org/jacoco/cafebabe/util/ClassDefinitionTest$Inner", reader.getClassName());
+		assertEquals("org/jacoco/cafebabe/test/ClassDefinitionTest$Inner", reader.getClassName());
 	}
 
 }

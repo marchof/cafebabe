@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.function.IntBinaryOperator;
 
 import org.jacoco.cafebabe.c20.MaxGenerator;
-import org.jacoco.cafebabe.util.MemoryClassLoader;
+import org.jacoco.cafebabe.test.MemoryClassLoader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.objectweb.asm.ClassWriter;

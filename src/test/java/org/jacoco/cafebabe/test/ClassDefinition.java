@@ -1,4 +1,4 @@
-package org.jacoco.cafebabe.util;
+package org.jacoco.cafebabe.test;
 
 import java.io.IOException;
 
