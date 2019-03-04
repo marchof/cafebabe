@@ -1,11 +1,10 @@
 package org.jacoco.cafebabe.c20;
 
 import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
-import static org.objectweb.asm.Opcodes.F_SAME;
 import static org.objectweb.asm.Opcodes.IF_ICMPLT;
 import static org.objectweb.asm.Opcodes.ILOAD;
 import static org.objectweb.asm.Opcodes.IRETURN;
-import static org.objectweb.asm.Opcodes.V11;
+import static org.objectweb.asm.Opcodes.V1_5;
 
 import org.jacoco.cafebabe.util.GeneratorSupport;
 import org.objectweb.asm.ClassVisitor;
@@ -30,7 +29,7 @@ public class MaxGenerator {
 
 	public static void create(ClassVisitor cv) {
 
-		cv.visit(V11, ACC_PUBLIC, "Max", null, "java/lang/Object",
+		cv.visit(V1_5, ACC_PUBLIC, "Max", null, "java/lang/Object",
 				new String[] { "java/util/function/IntBinaryOperator" });
 
 		GeneratorSupport.defaultInit(cv);
@@ -46,7 +45,6 @@ public class MaxGenerator {
 		mv.visitInsn(IRETURN);
 
 		mv.visitLabel(lt);
-		mv.visitFrame(F_SAME, 0, null, 0, null);
 		mv.visitVarInsn(ILOAD, 2);
 		mv.visitInsn(IRETURN);
 
