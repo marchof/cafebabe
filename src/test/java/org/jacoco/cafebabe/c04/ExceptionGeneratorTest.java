@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.jacoco.cafebabe.test.MemoryClassLoader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.util.CheckClassAdapter;
 
 class ExceptionGeneratorTest {
@@ -34,7 +33,7 @@ class ExceptionGeneratorTest {
 
 	@Test
 	void generator_should_use_event_APIs_correctly() {
-		ExceptionGenerator.create(new CheckClassAdapter(new ClassWriter(0)));
+		ExceptionGenerator.create(new CheckClassAdapter(null));
 	}
 
 }

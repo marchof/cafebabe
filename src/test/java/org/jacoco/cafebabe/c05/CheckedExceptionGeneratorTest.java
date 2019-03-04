@@ -7,7 +7,6 @@ import java.io.IOException;
 import org.jacoco.cafebabe.test.MemoryClassLoader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.util.CheckClassAdapter;
 
 class CheckedExceptionGeneratorTest {
@@ -30,7 +29,7 @@ class CheckedExceptionGeneratorTest {
 
 	@Test
 	void generator_should_use_event_APIs_correctly() {
-		CheckedExceptionGenerator.create(new CheckClassAdapter(new ClassWriter(0)));
+		CheckedExceptionGenerator.create(new CheckClassAdapter(null));
 	}
 
 }

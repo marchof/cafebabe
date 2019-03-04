@@ -8,7 +8,6 @@ import java.util.function.Supplier;
 import org.jacoco.cafebabe.test.MemoryClassLoader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.util.CheckClassAdapter;
 
 class InvokeInterfaceGeneratorTest {
@@ -31,7 +30,7 @@ class InvokeInterfaceGeneratorTest {
 
 	@Test
 	void generator_should_use_event_APIs_correctly() {
-		InvokeInterfaceGenerator.create(new CheckClassAdapter(new ClassWriter(0)));
+		InvokeInterfaceGenerator.create(new CheckClassAdapter(null));
 	}
 
 }

@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.jacoco.cafebabe.test.MemoryClassLoader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.util.CheckClassAdapter;
 
 class StaticInitGeneratorTest {
@@ -28,7 +27,7 @@ class StaticInitGeneratorTest {
 
 	@Test
 	void generator_should_use_event_APIs_correctly() {
-		StaticInitGenerator.create(new CheckClassAdapter(new ClassWriter(0)));
+		StaticInitGenerator.create(new CheckClassAdapter(null));
 	}
 
 }

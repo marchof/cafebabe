@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.jacoco.cafebabe.test.MemoryClassLoader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.util.CheckClassAdapter;
 
 class ConstantsGeneratorTest {
@@ -36,7 +35,7 @@ class ConstantsGeneratorTest {
 
 	@Test
 	void generator_should_use_event_APIs_correctly() {
-		ConstantsGenerator.create(new CheckClassAdapter(new ClassWriter(0)));
+		ConstantsGenerator.create(new CheckClassAdapter(null));
 	}
 
 }

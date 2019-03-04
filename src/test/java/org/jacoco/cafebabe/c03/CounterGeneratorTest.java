@@ -7,7 +7,6 @@ import java.util.function.IntSupplier;
 import org.jacoco.cafebabe.test.MemoryClassLoader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.util.CheckClassAdapter;
 
 class CounterGeneratorTest {
@@ -32,7 +31,7 @@ class CounterGeneratorTest {
 
 	@Test
 	void generator_should_use_event_APIs_correctly() {
-		CounterGenerator.create(new CheckClassAdapter(new ClassWriter(0)));
+		CounterGenerator.create(new CheckClassAdapter(null));
 	}
 
 }
