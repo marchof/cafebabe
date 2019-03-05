@@ -27,6 +27,7 @@ class ExceptionGeneratorTest {
 
 		StackTraceElement top = ex.getStackTrace()[0];
 		assertEquals("AnyNameYouLike.c", top.getFileName());
+		assertEquals("ExceptionRunnable", top.getClassName());
 		assertEquals("run", top.getMethodName());
 		assertEquals(12345, top.getLineNumber());
 	}
