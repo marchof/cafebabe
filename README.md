@@ -9,6 +9,7 @@ Example                          | Test                                         
 -------------------------------- | ----------------------------------------------- | -----------------------------------------------
 a01 Simple LOC Counter           | [source](src/test/java/org/jacoco/cafebabe/a01) | [source](src/main/java/org/jacoco/cafebabe/a01)
 a10 Executable Assertions        | [source](src/test/java/org/jacoco/cafebabe/a10) | [source](src/main/java/org/jacoco/cafebabe/a10)
+a80 Unparseable class from javac | [source](src/test/java/org/jacoco/cafebabe/a80) | [source](src/main/java/org/jacoco/cafebabe/a80)
 
 ## Class File Creation
 
