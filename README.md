@@ -22,6 +22,7 @@ c05 Undeclared Checked Exception | [source](src/test/java/org/jacoco/cafebabe/c0
 c12 Invoke Interface             | [source](src/test/java/org/jacoco/cafebabe/c12) | [source](src/main/java/org/jacoco/cafebabe/c12)
 c14 Invoke Dynamic               | [source](src/test/java/org/jacoco/cafebabe/c14) | [source](src/main/java/org/jacoco/cafebabe/c14)
 c20 Simple Control Flow          | [source](src/test/java/org/jacoco/cafebabe/c20) | [source](src/main/java/org/jacoco/cafebabe/c20)
+c21 Frames                       | [source](src/test/java/org/jacoco/cafebabe/c21) | [source](src/main/java/org/jacoco/cafebabe/c21)
 c50 Constant Fields              | [source](src/test/java/org/jacoco/cafebabe/c50) | [source](src/main/java/org/jacoco/cafebabe/c50)
 c51 Static Initializer           | [source](src/test/java/org/jacoco/cafebabe/c51) | [source](src/main/java/org/jacoco/cafebabe/c51)
 c52 Dynamic Constant             | [source](src/test/java/org/jacoco/cafebabe/c52) | [source](src/main/java/org/jacoco/cafebabe/c52)
