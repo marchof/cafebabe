@@ -2,14 +2,14 @@ package org.jacoco.cafebabe.c02;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.util.function.Supplier;
+import java.util.function.IntBinaryOperator;
 
 import org.jacoco.cafebabe.test.MemoryClassLoader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.objectweb.asm.util.CheckClassAdapter;
 
-class HelloSupplierGeneratorTest {
+class AdderGeneratorTest {
 
 	private MemoryClassLoader cl;
 
@@ -19,17 +19,18 @@ class HelloSupplierGeneratorTest {
 	}
 
 	@Test
-	void get_should_return_hello() throws Exception {
-		cl.add(HelloSupplierGenerator.create());
+	void add_should_add_two_integers() throws Exception {
+		cl.add(AdderGenerator.create());
 
-		Supplier<Object> supplier = cl.newInstance("HelloSupplier");
+		IntBinaryOperator adder = cl.newInstance("Adder");
+		int result = adder.applyAsInt(13, 29);
 
-		assertEquals("Hello", supplier.get());
+		assertEquals(42, result);
 	}
 
 	@Test
 	void generator_should_use_event_APIs_correctly() {
-		HelloSupplierGenerator.create(new CheckClassAdapter(null));
+		AdderGenerator.create(new CheckClassAdapter(null));
 	}
 
 }
