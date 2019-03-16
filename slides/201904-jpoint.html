@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Java 9, 10, 11</title>
+    <meta charset="utf-8">
+    <style>
+      @font-face{
+        font-family: 'Droid Serif';
+        src: url('remark/droidserif.ttf');
+      }
+      @font-face{
+        font-family: 'Yanone Kaffeesatz';
+        src: url('remark/yanonekaffeesatz.ttf');
+      }
+      @font-face{
+        font-family: 'Ubuntu Mono';
+        src: url('remark/ubuntumono.ttf');
+      }
+      body {
+        font-family: 'Droid Serif';
+      }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      .remark-slide-content {
+        font-size: 24px;
+      }
+      .remark-code {
+        font-size: 20px;
+      }
+      code {
+        background: #e7e8e2;
+        border-radius: 5px;
+      }
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle
+
+# Let's make some 0xCAFEBABE
+
+## Test-Driven Bytecode Engineering
+
+Evgeny Mandrikov, Marc Hoffmann
+
+JPoint 2019
+
+Moskow, 06.04.2019
+
+---
+# Slide 2
+
+
+
+---
+# Slide 3
+
+* Bullet 1
+* Bullet 2
+* Bullet 3
+
+---
+# Slide 3
+
+
+Some Code
+
+```java
+module org.hello {
+      exports org.hello;
+      requires org.output;
+}
+```
+
+---
+# Slide 4 with Animation
+
+* First show this...
+
+--
+
+* then show this
+
+---
+# Thank you!
+
+* https://github.com/marchof/cafebabe
+
+    </textarea>
+    <script src="remark/remark.min.js">
+    </script>
+    <script>
+      remark.create({ ratio: '16:9' });
+    </script>
+  </body>
+</html>
