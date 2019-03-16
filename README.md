@@ -26,5 +26,6 @@ c21 Frames                       | [source](src/test/java/org/jacoco/cafebabe/c2
 c50 Constant Fields              | [source](src/test/java/org/jacoco/cafebabe/c50) | [source](src/main/java/org/jacoco/cafebabe/c50)
 c51 Static Initializer           | [source](src/test/java/org/jacoco/cafebabe/c51) | [source](src/main/java/org/jacoco/cafebabe/c51)
 c52 Dynamic Constant             | [source](src/test/java/org/jacoco/cafebabe/c52) | [source](src/main/java/org/jacoco/cafebabe/c52)
+c53 putstatic for final field    | [source](src/test/java/org/jacoco/cafebabe/c53) | [source](src/main/java/org/jacoco/cafebabe/c53)
 
 ## Class File Instrumentation
