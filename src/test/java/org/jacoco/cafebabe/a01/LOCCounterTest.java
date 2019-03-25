@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.jacoco.cafebabe.test.ClassDefinition;
 import org.junit.jupiter.api.Test;
 
-public class LOCCounterTest {
+class LOCCounterTest {
 
 	@Test
 	void should_count_lines() throws Exception {

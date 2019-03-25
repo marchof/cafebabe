@@ -18,15 +18,15 @@ import org.objectweb.asm.MethodVisitor;
  *      "https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-6.html#jvms-6.5.putstatic">JVM
  *      Spec 6.5.putstatic</a>
  */
-public class PutStaticGenerator {
+class PutStaticGenerator {
 
-	public static byte[] create(int version) {
+	static byte[] create(int version) {
 		ClassWriter writer = new ClassWriter(0);
 		create(version, writer);
 		return writer.toByteArray();
 	}
 
-	public static void create(int version, ClassVisitor cv) {
+	static void create(int version, ClassVisitor cv) {
 
 		cv.visit(version, ACC_PUBLIC, "Example", null, "java/lang/Object", new String[]{"java/lang/Runnable"});
 

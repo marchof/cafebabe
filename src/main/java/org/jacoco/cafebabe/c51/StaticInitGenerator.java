@@ -24,15 +24,15 @@ import org.objectweb.asm.Opcodes;
  *      "https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-5.html#jvms-5.5">JVM
  *      Spec 5.5</a>
  */
-public class StaticInitGenerator {
+class StaticInitGenerator {
 
-	public static byte[] create() {
+	static byte[] create() {
 		ClassWriter writer = new ClassWriter(0);
 		create(writer);
 		return writer.toByteArray();
 	}
 
-	public static void create(ClassVisitor cv) {
+	static void create(ClassVisitor cv) {
 		cv.visit(V11, ACC_PUBLIC, "Constants", null, "java/lang/Object", null);
 
 		cv.visitField(ACC_PUBLIC | ACC_STATIC | ACC_FINAL, "CONST", "Ljava/lang/Object;", null, null);

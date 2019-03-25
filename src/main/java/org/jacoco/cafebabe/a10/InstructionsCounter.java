@@ -21,9 +21,9 @@ import org.objectweb.asm.tree.MethodNode;
  *      "https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-4.html#jvms-4.7.12">JVM
  *      Spec 4.7.12</a>
  */
-public class InstructionsCounter {
+class InstructionsCounter {
 
-	public static Map<Integer, Integer> getInstructionsPerLine(byte[] definition) {
+	static Map<Integer, Integer> getInstructionsPerLine(byte[] definition) {
 		ClassReader reader = new ClassReader(definition);
 
 		Map<Integer, Integer> instructions = new HashMap<>();

@@ -21,15 +21,15 @@ import org.objectweb.asm.MethodVisitor;
  *      "https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.invokeinterface">JVM
  *      Spec 6.5.invokeinterface</a>
  */
-public class InvokeInterfaceGenerator {
+class InvokeInterfaceGenerator {
 
-	public static byte[] create() {
+	static byte[] create() {
 		ClassWriter writer = new ClassWriter(0);
 		create(writer);
 		return writer.toByteArray();
 	}
 
-	public static void create(ClassVisitor cv) {
+	static void create(ClassVisitor cv) {
 
 		cv.visit(V11, ACC_PUBLIC, "InvokeInterface", null, "java/lang/Object", new String[]{"java/util/function/Function"});
 

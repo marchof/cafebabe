@@ -19,15 +19,15 @@ import org.objectweb.asm.MethodVisitor;
  *      "https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-2.html#jvms-2.11.7">JVM
  *      Spec 2.11.7</a>
  */
-public class MaxGenerator {
+class MaxGenerator {
 
-	public static byte[] create() {
+	static byte[] create() {
 		ClassWriter writer = new ClassWriter(0);
 		create(writer);
 		return writer.toByteArray();
 	}
 
-	public static void create(ClassVisitor cv) {
+	static void create(ClassVisitor cv) {
 
 		cv.visit(V1_5, ACC_PUBLIC, "Max", null, "java/lang/Object",
 				new String[] { "java/util/function/IntBinaryOperator" });

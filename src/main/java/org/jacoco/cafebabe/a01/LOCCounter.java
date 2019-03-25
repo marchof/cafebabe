@@ -17,9 +17,9 @@ import org.objectweb.asm.Opcodes;
  *      "https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-4.html#jvms-4.7.12">JVM
  *      Spec 4.7.12</a>
  */
-public class LOCCounter {
+class LOCCounter {
 
-	public static int getLOC(byte[] definition) {
+	static int getLOC(byte[] definition) {
 		ClassReader reader = new ClassReader(definition);
 
 		Set<Integer> lines = new HashSet<Integer>();

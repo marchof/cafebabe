@@ -1,6 +1,6 @@
 package org.jacoco.cafebabe.a10;
 
-public class Target1 {
+class Target1 {
 
 	// assertInstructions(0)
 

@@ -32,13 +32,13 @@ public class IndyGenerator {
 
 	static MutableCallSite callSite = new MutableCallSite(MethodHandles.constant(String.class, "Hello"));
 
-	public static byte[] create() {
+	static byte[] create() {
 		ClassWriter writer = new ClassWriter(0);
 		create(writer);
 		return writer.toByteArray();
 	}
 
-	public static void create(ClassVisitor cv) {
+	static void create(ClassVisitor cv) {
 
 		cv.visit(V11, ACC_PUBLIC, "Indy", null, "java/lang/Object", new String[]{"java/util/function/Supplier"});
 

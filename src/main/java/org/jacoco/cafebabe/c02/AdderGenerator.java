@@ -23,15 +23,15 @@ import org.objectweb.asm.MethodVisitor;
  *      "https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-4.html#jvms-4.1">JVM
  *      Spec 4.1</a>
  */
-public class AdderGenerator {
+class AdderGenerator {
 
-	public static byte[] create() {
+	static byte[] create() {
 		ClassWriter writer = new ClassWriter(0);
 		create(writer);
 		return writer.toByteArray();
 	}
 
-	public static void create(ClassVisitor cv) {
+	static void create(ClassVisitor cv) {
 
 		cv.visit(V11, ACC_PUBLIC, "Adder", null, "java/lang/Object",
 				new String[] { "java/util/function/IntBinaryOperator" });

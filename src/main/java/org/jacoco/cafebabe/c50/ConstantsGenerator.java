@@ -18,15 +18,15 @@ import org.objectweb.asm.ClassWriter;
  *      "https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-4.html#jvms-4.7.2">JVM
  *      Spec 4.7.2</a>
  */
-public class ConstantsGenerator {
+class ConstantsGenerator {
 
-	public static byte[] create() {
+	static byte[] create() {
 		ClassWriter writer = new ClassWriter(0);
 		create(writer);
 		return writer.toByteArray();
 	}
 
-	public static void create(ClassVisitor cv) {
+	static void create(ClassVisitor cv) {
 		cv.visit(V11, ACC_PUBLIC, "Constants", null, "java/lang/Object", null);
 
 		cv.visitField(ACC_PUBLIC | ACC_STATIC | ACC_FINAL, "CONST_INT", "I", null, 42);

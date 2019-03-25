@@ -31,15 +31,15 @@ import org.objectweb.asm.MethodVisitor;
  *      "https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-6.html#jvms-6.5.putfield">JVM
  *      Spec 6.5.putfield</a>
  */
-public class CounterGenerator {
+class CounterGenerator {
 
-	public static byte[] create() {
+	static byte[] create() {
 		ClassWriter writer = new ClassWriter(0);
 		create(writer);
 		return writer.toByteArray();
 	}
 
-	public static void create(ClassVisitor cv) {
+	static void create(ClassVisitor cv) {
 
 		cv.visit(V11, ACC_PUBLIC, "Counter", null, "java/lang/Object",
 				new String[] { "java/util/function/IntSupplier" });

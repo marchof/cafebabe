@@ -5,7 +5,7 @@ import java.time.LocalDate;
 /**
  * Example class used in {@link LOCCounterTest}.
  */
-public class LOCCounterTestTarget { // #1 implicit default constructor
+class LOCCounterTestTarget { // #1 implicit default constructor
 
 	LocalDate today = LocalDate.now(); // #2 part of the default constructor
 
