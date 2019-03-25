@@ -26,9 +26,9 @@ class ExceptionGeneratorTest {
 		RuntimeException ex = assertThrows(RuntimeException.class, runnable::run);
 
 		StackTraceElement top = ex.getStackTrace()[0];
-		assertEquals("AnyNameYouLike.c", top.getFileName());
 		assertEquals("ExceptionRunnable", top.getClassName());
 		assertEquals("run", top.getMethodName());
+		assertEquals("AnyNameYouLike.c", top.getFileName());
 		assertEquals(12345, top.getLineNumber());
 	}
 
