@@ -14,7 +14,7 @@ import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 
 /**
- * Creates a <code>Runnable</code> which throws a RuntimeException. The class
+ * Creates a <code>Runnable</code> which throws exception. The class
  * file is created with debug information so that the exception has a source and
  * line number reference.
  * 
@@ -54,9 +54,9 @@ public class ExceptionGenerator {
 		mv.visitLabel(l);
 		mv.visitLineNumber(12345, l);
 
-		mv.visitTypeInsn(NEW, "java/lang/RuntimeException");
+		mv.visitTypeInsn(NEW, "java/io/IOException");
 		mv.visitInsn(DUP);
-		mv.visitMethodInsn(INVOKESPECIAL, "java/lang/RuntimeException", "<init>", "()V", false);
+		mv.visitMethodInsn(INVOKESPECIAL, "java/io/IOException", "<init>", "()V", false);
 		mv.visitInsn(ATHROW);
 		mv.visitMaxs(2, 1);
 		mv.visitEnd();
