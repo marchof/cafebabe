@@ -10,7 +10,7 @@ import org.objectweb.asm.ClassReader;
  */
 public class MemoryClassLoader extends ClassLoader {
 
-	private final Map<String, byte[]> definitions = new HashMap<String, byte[]>();
+	private final Map<String, byte[]> definitions = new HashMap<>();
 
 	public MemoryClassLoader() {
 		super(MemoryClassLoader.class.getClassLoader());

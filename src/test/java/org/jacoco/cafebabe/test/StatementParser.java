@@ -69,7 +69,7 @@ class StatementParser {
 
 	private void invocation() throws IOException {
 		final String name = expect(StreamTokenizer.TT_WORD).sval;
-		final List<Object> args = new ArrayList<Object>();
+		final List<Object> args = new ArrayList<>();
 		expect('(');
 		if (!accept(')')) {
 			args.add(argument());

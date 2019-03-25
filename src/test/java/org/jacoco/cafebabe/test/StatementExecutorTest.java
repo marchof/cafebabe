@@ -20,7 +20,7 @@ public class StatementExecutorTest {
 
 	@BeforeEach
 	void setup() {
-		invocations = new HashMap<String, List<?>>();
+		invocations = new HashMap<>();
 	}
 
 	@Test

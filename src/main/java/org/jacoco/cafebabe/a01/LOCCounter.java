@@ -22,7 +22,7 @@ class LOCCounter {
 	static int getLOC(byte[] definition) {
 		ClassReader reader = new ClassReader(definition);
 
-		Set<Integer> lines = new HashSet<Integer>();
+		Set<Integer> lines = new HashSet<>();
 		reader.accept(new LOCClassVisitor(lines), 0);
 
 		return lines.size();
