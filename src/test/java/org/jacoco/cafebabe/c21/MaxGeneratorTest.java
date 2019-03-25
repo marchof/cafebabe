@@ -11,7 +11,7 @@ import org.objectweb.asm.util.CheckClassAdapter;
 class MaxGeneratorTest {
 
 	@Test
-	void generator_create_frames_correctly_correctly() {
+	void generator_should_create_frames_correctly() {
 		byte[] definition = MaxGenerator.create();
 		byte[] expectedFrames = computeFrames(definition);
 		assertEquals(Dumper.dump(expectedFrames), Dumper.dump(definition));
