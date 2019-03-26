@@ -8,6 +8,9 @@ import org.jacoco.cafebabe.test.ClassDefinition;
 import org.jacoco.cafebabe.test.SourceReader;
 import org.junit.jupiter.api.Test;
 
+/**
+ * Unit test for {@link InstructionsCounter}.
+ */
 public class InstructionsCounterTest {
 
 	private Map<Integer, Integer> instructions;

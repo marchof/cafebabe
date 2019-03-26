@@ -8,6 +8,9 @@ import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.util.CheckClassAdapter;
 
+/**
+ * Unit test for {@link MaxGenerator}.
+ */
 class MaxGeneratorTest {
 
 	@Test

@@ -5,6 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.jacoco.cafebabe.test.ClassDefinition;
 import org.junit.jupiter.api.Test;
 
+/**
+ * Unit test for {@link LOCCounter}.
+ */
 class LOCCounterTest {
 
 	@Test

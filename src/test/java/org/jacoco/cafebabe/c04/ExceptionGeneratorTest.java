@@ -8,6 +8,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.objectweb.asm.util.CheckClassAdapter;
 
+/**
+ * Unit test for {@link ExceptionGenerator}.
+ */
 class ExceptionGeneratorTest {
 
 	private MemoryClassLoader cl;
