@@ -19,7 +19,13 @@ import org.objectweb.asm.MethodVisitor;
  * 
  * @see <a href=
  *      "https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-2.html#jvms-2.11.7">JVM
- *      Spec 2.11.7</a>
+ *      Spec 2.11.7. Control Transfer Instructions</a>
+ * @see <a href=
+ *      "https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-4.html#jvms-4.7.4">JVM
+ *      Spec 4.7.4. The StackMapTable Attribute</a>
+ * @see <a href=
+ *      "https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-4.html#jvms-4.10.1">JVM
+ *      Spec 4.10.1. Verification by Type Checking</a>
  */
 class MaxGenerator {
 

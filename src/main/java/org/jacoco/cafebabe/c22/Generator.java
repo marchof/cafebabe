@@ -9,6 +9,13 @@ import org.objectweb.asm.MethodVisitor;
 
 /**
  * Demonstrates why {@link ClassWriter#COMPUTE_FRAMES} is bad.
+ *
+ * @see <a href=
+ *      "https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-4.html#jvms-4.7.4">JVM
+ *      Spec 4.7.4. The StackMapTable Attribute</a>
+ * @see <a href=
+ *      "https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-4.html#jvms-4.10.1">JVM
+ *      Spec 4.10.1. Verification by Type Checking</a>
  */
 class Generator {
 

@@ -15,6 +15,9 @@ import org.objectweb.asm.MethodVisitor;
  * Creates a class which uses {@code putstatic} for {@code final} field outside of static initializer.
  *
  * @see <a href=
+ *      "https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-2.html#jvms-2.9.2">JVM
+ *      Spec 2.9.2. Class Initialization Methods</a>
+ * @see <a href=
  *      "https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-6.html#jvms-6.5.putstatic">JVM
  *      Spec 6.5.putstatic</a>
  */

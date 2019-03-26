@@ -18,7 +18,7 @@ import org.objectweb.asm.MethodVisitor;
  * 
  * @see <a href=
  *      "https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-2.html#jvms-2.10">JVM
- *      Spec 2.10</a>
+ *      Spec 2.10. Exceptions</a>
  * @see <a href=
  *      "https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-6.html#jvms-6.5.athrow">JVM
  *      Spec 6.5.athrow</a>

@@ -20,7 +20,7 @@ import org.objectweb.asm.MethodVisitor;
  * 
  * @see <a href=
  *      "https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-4.html#jvms-4.4.10">JVM
- *      Spec 4.4.10</a>
+ *      Spec 4.4.10. The CONSTANT_Dynamic_info and CONSTANT_InvokeDynamic_info Structures</a>
  * @see <a href=
  *      "https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-6.html#jvms-6.5.ldc">JVM
  *      Spec 6.5.ldc</a>

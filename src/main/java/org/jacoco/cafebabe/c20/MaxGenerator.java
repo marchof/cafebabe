@@ -17,7 +17,7 @@ import org.objectweb.asm.MethodVisitor;
  * 
  * @see <a href=
  *      "https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-2.html#jvms-2.11.7">JVM
- *      Spec 2.11.7</a>
+ *      Spec 2.11.7. Control Transfer Instructions</a>
  */
 class MaxGenerator {
 

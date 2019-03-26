@@ -21,7 +21,7 @@ import org.objectweb.asm.MethodVisitor;
  * 
  * @see <a href=
  *      "https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-4.html#jvms-4.1">JVM
- *      Spec 4.1</a>
+ *      Spec 4.1. The ClassFile Structure</a>
  */
 class AdderGenerator {
 

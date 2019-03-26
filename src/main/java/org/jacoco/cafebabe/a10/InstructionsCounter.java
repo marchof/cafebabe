@@ -19,7 +19,7 @@ import org.objectweb.asm.tree.MethodNode;
  * 
  * @see <a href=
  *      "https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-4.html#jvms-4.7.12">JVM
- *      Spec 4.7.12</a>
+ *      Spec 4.7.12. The LineNumberTable Attribute</a>
  */
 class InstructionsCounter {
 

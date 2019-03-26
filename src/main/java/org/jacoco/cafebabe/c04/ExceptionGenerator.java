@@ -21,13 +21,16 @@ import org.objectweb.asm.MethodVisitor;
  * 
  * @see <a href=
  *      "https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-2.html#jvms-2.10">JVM
- *      Spec 2.10</a>
+ *      Spec 2.10. Exceptions</a>
+ * @see <a href=
+ *      "https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-4.html#jvms-4.7.5">JVM
+ *      Spec 4.7.5. The Exceptions Attribute</a>
  * @see <a href=
  *      "https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-4.html#jvms-4.7.10">JVM
- *      Spec 4.7.10</a>
+ *      Spec 4.7.10. The SourceFile Attribute</a>
  * @see <a href=
  *      "https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-4.html#jvms-4.7.12">JVM
- *      Spec 4.7.12</a>
+ *      Spec 4.7.12. The LineNumberTable Attribute</a>
  * @see <a href=
  *      "https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-6.html#jvms-6.5.athrow">JVM
  *      Spec 6.5.athrow</a>
