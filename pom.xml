@@ -16,8 +16,6 @@
     <maven.compiler.target>11</maven.compiler.target>
     
     <asm.version>7.1</asm.version>
-
-    <maven.surefire.plugin.version>2.22.1</maven.surefire.plugin.version>
   </properties>
 
   <dependencies>
@@ -40,13 +38,15 @@
   </dependencies>
 
   <build>
-    <plugins>
-      <!-- JUnit 5 requires Surefire version 2.22.1 or higher -->
-      <plugin>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>${maven.surefire.plugin.version}</version>
-      </plugin>
-    </plugins>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>2.22.1</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
   </build>
 
 </project>
