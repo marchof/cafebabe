@@ -29,5 +29,6 @@ c50 Constant Fields              | [source](src/test/java/org/jacoco/cafebabe/c5
 c51 Static Initializer           | [source](src/test/java/org/jacoco/cafebabe/c51) | [source](src/main/java/org/jacoco/cafebabe/c51)
 c52 Dynamic Constant             | [source](src/test/java/org/jacoco/cafebabe/c52) | [source](src/main/java/org/jacoco/cafebabe/c52)
 c53 putstatic for final field    | [source](src/test/java/org/jacoco/cafebabe/c53) | [source](src/main/java/org/jacoco/cafebabe/c53)
+c59 Condy Crash                  | [source](src/test/java/org/jacoco/cafebabe/c59) | [source](src/main/java/org/jacoco/cafebabe/c59)
 
 ## Class File Instrumentation
