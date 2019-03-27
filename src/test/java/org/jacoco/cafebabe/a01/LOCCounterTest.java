@@ -12,9 +12,9 @@ class LOCCounterTest {
 
 	@Test
 	void should_count_lines() throws Exception {
-		byte[] definition = ClassDefinition.get(LOCCounterTestTarget.class);
+		byte[] definition = ClassDefinition.get(SimpleTarget.class);
 
-		assertEquals(3, LOCCounter.getLOC(definition));
+		assertEquals(1, LOCCounter.getLOC(definition));
 	}
 
 }

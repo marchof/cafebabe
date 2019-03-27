@@ -16,8 +16,8 @@ public class InstructionsCounterTest {
 	private Map<Integer, Integer> instructions;
 
 	@Test
-	void target1() throws Exception {
-		run(Target1.class);
+	void simple_target() throws Exception {
+		run(SimpleTarget.class);
 	}
 
 	void run(Class<?> target) throws Exception {
