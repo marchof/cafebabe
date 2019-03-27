@@ -21,40 +21,31 @@ class LOCCounter {
 
 	static int getLOC(byte[] definition) {
 		ClassReader reader = new ClassReader(definition);
-
-		Set<Integer> lines = new HashSet<>();
-		reader.accept(new LOCClassVisitor(lines), 0);
-
-		return lines.size();
+		LOCClassVisitor visitor = new LOCClassVisitor();
+		reader.accept(visitor, 0);
+		return visitor.getLOCs();
 	}
 
 	private static final class LOCClassVisitor extends ClassVisitor {
-		private final Set<Integer> lines;
+		private final Set<Integer> lines = new HashSet<>();
 
-		private LOCClassVisitor(Set<Integer> lines) {
+		private LOCClassVisitor() {
 			super(Opcodes.ASM7);
-			this.lines = lines;
 		}
 
 		@Override
 		public MethodVisitor visitMethod(int access, String name, String descriptor, String signature,
 				String[] exceptions) {
-			return new LOCMethodVisitor(lines);
-		}
-	}
-
-	private static class LOCMethodVisitor extends MethodVisitor {
-
-		private Set<Integer> lines;
-
-		public LOCMethodVisitor(Set<Integer> lines) {
-			super(Opcodes.ASM7);
-			this.lines = lines;
+			return new MethodVisitor(Opcodes.ASM7) {
+				@Override
+				public void visitLineNumber(int line, Label start) {
+					lines.add(line);
+				}
+			};
 		}
 
-		@Override
-		public void visitLineNumber(int line, Label start) {
-			lines.add(line);
+		int getLOCs() {
+			return lines.size();
 		}
 	}
 
