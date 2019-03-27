@@ -20,8 +20,8 @@ import org.objectweb.asm.Opcodes;
 class LOCCounter {
 
 	static int getLOC(byte[] definition) {
-		ClassReader reader = new ClassReader(definition);
-		LOCClassVisitor visitor = new LOCClassVisitor();
+		var reader = new ClassReader(definition);
+		var visitor = new LOCClassVisitor();
 		reader.accept(visitor, 0);
 		return visitor.getLOCs();
 	}

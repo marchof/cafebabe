@@ -21,7 +21,7 @@ import org.objectweb.asm.ClassWriter;
 class ConstantsGenerator {
 
 	static byte[] create() {
-		ClassWriter writer = new ClassWriter(0);
+		var writer = new ClassWriter(0);
 		create(writer);
 		return writer.toByteArray();
 	}

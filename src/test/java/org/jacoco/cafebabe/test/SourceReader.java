@@ -56,7 +56,7 @@ public class SourceReader {
 	}
 
 	private static String getSource(Class<?> clazz) throws IOException {
-		ClassNode node = new ClassNode();
+		var node = new ClassNode();
 		new ClassReader(ClassDefinition.get(clazz)).accept(node, SKIP_CODE);
 		return node.sourceFile;
 	}

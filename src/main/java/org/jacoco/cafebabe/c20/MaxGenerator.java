@@ -22,7 +22,7 @@ import org.objectweb.asm.MethodVisitor;
 class MaxGenerator {
 
 	static byte[] create() {
-		ClassWriter writer = new ClassWriter(0);
+		var writer = new ClassWriter(0);
 		create(writer);
 		return writer.toByteArray();
 	}
@@ -38,7 +38,7 @@ class MaxGenerator {
 		mv.visitCode();
 		mv.visitVarInsn(ILOAD, 1);
 		mv.visitVarInsn(ILOAD, 2);
-		Label lt = new Label();
+		var lt = new Label();
 		mv.visitJumpInsn(IF_ICMPLT, lt);
 
 		mv.visitVarInsn(ILOAD, 1);

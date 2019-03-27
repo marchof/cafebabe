@@ -28,7 +28,7 @@ import org.objectweb.asm.MethodVisitor;
 public class CondyGenerator {
 
 	static byte[] create() {
-		ClassWriter writer = new ClassWriter(0);
+		var writer = new ClassWriter(0);
 		create(writer);
 		return writer.toByteArray();
 	}

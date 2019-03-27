@@ -24,7 +24,7 @@ import org.objectweb.asm.MethodVisitor;
 class PutStaticGenerator {
 
 	static byte[] create(int version) {
-		ClassWriter writer = new ClassWriter(0);
+		var writer = new ClassWriter(0);
 		create(version, writer);
 		return writer.toByteArray();
 	}

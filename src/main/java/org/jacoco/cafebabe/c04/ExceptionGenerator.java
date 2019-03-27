@@ -38,7 +38,7 @@ import org.objectweb.asm.MethodVisitor;
 class ExceptionGenerator {
 
 	static byte[] create() {
-		ClassWriter writer = new ClassWriter(0);
+		var writer = new ClassWriter(0);
 		create(writer);
 		return writer.toByteArray();
 	}
@@ -53,7 +53,7 @@ class ExceptionGenerator {
 		MethodVisitor mv = cv.visitMethod(ACC_PUBLIC, "run", "()V", null, null);
 		mv.visitCode();
 
-		Label l = new Label();
+		var l = new Label();
 		mv.visitLabel(l);
 		mv.visitLineNumber(12345, l);
 

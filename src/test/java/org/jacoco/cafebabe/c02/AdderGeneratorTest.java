@@ -26,7 +26,7 @@ class AdderGeneratorTest {
 		cl.add(AdderGenerator.create());
 
 		IntBinaryOperator adder = cl.newInstance("Adder");
-		int result = adder.applyAsInt(13, 29);
+		var result = adder.applyAsInt(13, 29);
 
 		assertEquals(42, result);
 	}

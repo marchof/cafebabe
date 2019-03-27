@@ -8,7 +8,7 @@ import org.jacoco.cafebabe.test.MemoryClassLoader;
 public class CondyCrashGeneratorExample {
 
 	public static void main(String[] args) throws Throwable {
-		MemoryClassLoader classLoader = new MemoryClassLoader();
+		var classLoader = new MemoryClassLoader();
 		classLoader.add(CondyCrashGenerator.create());
 		var cls = classLoader.loadClass("CondyCrash");
 

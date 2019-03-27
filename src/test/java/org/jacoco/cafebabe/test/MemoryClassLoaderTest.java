@@ -22,7 +22,7 @@ class MemoryClassLoaderTest {
 
 	@Test
 	void should_load_added_class() throws Exception {
-		ClassWriter cw = new ClassWriter(0);
+		var cw = new ClassWriter(0);
 		cw.visit(V11, ACC_PUBLIC, "Foo", null, "java/lang/Object", null);
 
 		cl.add(cw.toByteArray());

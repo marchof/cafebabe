@@ -27,7 +27,7 @@ import org.objectweb.asm.Opcodes;
 class StaticInitGenerator {
 
 	static byte[] create() {
-		ClassWriter writer = new ClassWriter(0);
+		var writer = new ClassWriter(0);
 		create(writer);
 		return writer.toByteArray();
 	}

@@ -21,7 +21,7 @@ public class SourceReaderTest {
 
 	@Test
 	void should_execute_comments() throws Exception {
-		SourceReader reader = new SourceReader(SourceReaderTest.class);
+		var reader = new SourceReader(SourceReaderTest.class);
 
 		reader.executeComments(this);
 

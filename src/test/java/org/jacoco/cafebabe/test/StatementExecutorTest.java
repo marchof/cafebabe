@@ -25,7 +25,7 @@ public class StatementExecutorTest {
 
 	@Test
 	void should_prefix_arguments() {
-		StatementExecutor executor = new StatementExecutor(this, "Hello", "world");
+		var executor = new StatementExecutor(this, "Hello", "world");
 
 		executor.visitInvocation("ctx", "target1", "!");
 
@@ -34,7 +34,7 @@ public class StatementExecutorTest {
 
 	@Test
 	void should_call_method_with_int_argument() {
-		StatementExecutor executor = new StatementExecutor(this);
+		var executor = new StatementExecutor(this);
 
 		executor.visitInvocation("ctx", "target2", Integer.valueOf(42));
 
@@ -43,7 +43,7 @@ public class StatementExecutorTest {
 
 	@Test
 	void should_preserve_Errors() {
-		StatementExecutor executor = new StatementExecutor(this);
+		var executor = new StatementExecutor(this);
 
 		Throwable ex = assertThrows(AssertionFailedError.class, () -> executor.visitInvocation("ctx", "target3"));
 		assertEquals("Original AssertionError.", ex.getMessage());
@@ -51,7 +51,7 @@ public class StatementExecutorTest {
 
 	@Test
 	void should_preserve_RuntimeExceptions() {
-		StatementExecutor executor = new StatementExecutor(this);
+		var executor = new StatementExecutor(this);
 
 		Throwable ex = assertThrows(NoSuchElementException.class, () -> executor.visitInvocation("ctx", "target4"));
 		assertEquals("Original AssertionError.", ex.getMessage());
@@ -59,7 +59,7 @@ public class StatementExecutorTest {
 
 	@Test
 	void should_wrap_other_exceptions() {
-		StatementExecutor executor = new StatementExecutor(this);
+		var executor = new StatementExecutor(this);
 
 		Throwable ex = assertThrows(RuntimeException.class, () -> executor.visitInvocation("ctx", "target5"));
 		assertEquals("Invocation error (ctx)", ex.getMessage());
@@ -68,7 +68,7 @@ public class StatementExecutorTest {
 
 	@Test
 	void should_throw_RuntimeException_when_method_cannot_be_invoked() {
-		StatementExecutor executor = new StatementExecutor(this);
+		var executor = new StatementExecutor(this);
 
 		Throwable ex = assertThrows(RuntimeException.class, () -> executor.visitInvocation("ctx", "doesNotExist"));
 		assertEquals("Invocation error (ctx)", ex.getMessage());

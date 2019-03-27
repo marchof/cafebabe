@@ -20,7 +20,7 @@ import org.objectweb.asm.MethodVisitor;
 class Generator {
 
 	static byte[] create() {
-		ClassWriter writer = new ClassWriter(0);
+		var writer = new ClassWriter(0);
 		create(writer);
 		return writer.toByteArray();
 	}
@@ -42,11 +42,11 @@ class Generator {
 
 		mv.visitVarInsn(ALOAD, 0);
 		mv.visitTypeInsn(INSTANCEOF, "MyException");
-		Label l = new Label();
+		var l = new Label();
 		mv.visitJumpInsn(IFEQ, l);
 
 		mv.visitVarInsn(ALOAD, 0);
-		Label r = new Label();
+		var r = new Label();
 		mv.visitJumpInsn(GOTO, r);
 
 		mv.visitLabel(l);

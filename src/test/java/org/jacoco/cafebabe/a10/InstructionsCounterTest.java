@@ -24,7 +24,7 @@ public class InstructionsCounterTest {
 		byte[] definition = ClassDefinition.get(target);
 		instructions = InstructionsCounter.getInstructionsPerLine(definition);
 
-		SourceReader reader = new SourceReader(target);
+		var reader = new SourceReader(target);
 		reader.executeComments(this);
 	}
 

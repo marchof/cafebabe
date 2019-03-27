@@ -34,7 +34,7 @@ import org.objectweb.asm.MethodVisitor;
 class CounterGenerator {
 
 	static byte[] create() {
-		ClassWriter writer = new ClassWriter(0);
+		var writer = new ClassWriter(0);
 		create(writer);
 		return writer.toByteArray();
 	}

@@ -13,7 +13,7 @@ public class ClassDefinitionTest {
 		byte[] definition = ClassDefinition.get(ClassDefinitionTest.class);
 		assertNotNull(definition);
 
-		ClassReader reader = new ClassReader(definition);
+		var reader = new ClassReader(definition);
 		assertEquals("org/jacoco/cafebabe/test/ClassDefinitionTest", reader.getClassName());
 	}
 
@@ -25,7 +25,7 @@ public class ClassDefinitionTest {
 		byte[] definition = ClassDefinition.get(Inner.class);
 		assertNotNull(definition);
 
-		ClassReader reader = new ClassReader(definition);
+		var reader = new ClassReader(definition);
 		assertEquals("org/jacoco/cafebabe/test/ClassDefinitionTest$Inner", reader.getClassName());
 	}
 

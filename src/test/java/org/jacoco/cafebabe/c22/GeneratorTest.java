@@ -51,8 +51,8 @@ class GeneratorTest {
 	}
 
 	private byte[] computeFrames(byte[] definition) {
-		ClassReader cr = new ClassReader(definition);
-		ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES) {
+		var cr = new ClassReader(definition);
+		var cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES) {
 			@Override
 			protected String getCommonSuperClass(String type1, String type2) {
 				if ("java/lang/Throwable".equals(type1) && "MyException".equals(type2)) {

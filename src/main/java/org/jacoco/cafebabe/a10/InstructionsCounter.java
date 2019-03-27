@@ -24,7 +24,7 @@ import org.objectweb.asm.tree.MethodNode;
 class InstructionsCounter {
 
 	static Map<Integer, Integer> getInstructionsPerLine(byte[] definition) {
-		ClassReader reader = new ClassReader(definition);
+		var reader = new ClassReader(definition);
 
 		Map<Integer, Integer> instructions = new HashMap<>();
 		reader.accept(new CountingClassVisitor(instructions), 0);

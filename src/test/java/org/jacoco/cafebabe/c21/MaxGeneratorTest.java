@@ -21,8 +21,8 @@ class MaxGeneratorTest {
 	}
 
 	private byte[] computeFrames(byte[] definition) {
-		ClassReader cr = new ClassReader(definition);
-		ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
+		var cr = new ClassReader(definition);
+		var cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
 		cr.accept(cw, 0);
 		return cw.toByteArray();
 	}

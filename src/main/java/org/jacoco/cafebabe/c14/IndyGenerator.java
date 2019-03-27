@@ -33,7 +33,7 @@ public class IndyGenerator {
 	static MutableCallSite callSite = new MutableCallSite(MethodHandles.constant(String.class, "Hello"));
 
 	static byte[] create() {
-		ClassWriter writer = new ClassWriter(0);
+		var writer = new ClassWriter(0);
 		create(writer);
 		return writer.toByteArray();
 	}
@@ -47,7 +47,7 @@ public class IndyGenerator {
 		MethodVisitor mv = cv.visitMethod(ACC_PUBLIC, "get", "()Ljava/lang/Object;", null, null);
 		mv.visitCode();
 
-		Handle handle = new Handle(H_INVOKESTATIC, "org/jacoco/cafebabe/c14/IndyGenerator", "bootstrap",
+		var handle = new Handle(H_INVOKESTATIC, "org/jacoco/cafebabe/c14/IndyGenerator", "bootstrap",
 			"(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;", false);
 		mv.visitInvokeDynamicInsn("get", "()Ljava/lang/String;", handle);
 		mv.visitInsn(ARETURN);
