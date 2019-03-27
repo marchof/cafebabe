@@ -1,0 +1,1037 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-03-27 Wed 17:08 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Let's make some 0xCAFEBABE</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="#JPoint #bytecode #TDD" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Let's make some 0xCAFEBABE</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org2157634">Who we are?</a></li>
+<li><a href="#orgc4e4975">Use Cases for Byte Code Engineering</a></li>
+<li><a href="#orge84aed2">ASM - A Bytecode Manipulation Library</a></li>
+<li><a href="#org6afcd12">Test Driven Bytecode Engineering</a></li>
+<li><a href="#orgbeffebc">Generation</a></li>
+<li><a href="#C01">How to test class creation?</a></li>
+<li><a href="#C02">It is a good idea to separate implementation from API&#x2026;</a></li>
+<li><a href="#C04">What if exception happens in generated code?</a></li>
+<li><a href="#C06">How to catch exception in generated code?</a></li>
+<li><a href="#C20"><span class="todo TODO">TODO</span> C20: Simple Control Flow</a></li>
+<li><a href="#C21">Stack Map Frames</a></li>
+<li><a href="#C22">Why not always <code>COMPUTE_FRAMES</code>?</a></li>
+<li><a href="#org8299b3d">Analysis</a></li>
+<li><a href="#org17975f2">Count executable source lines in a given class</a></li>
+<li><a href="#A10">Executable Comments</a></li>
+<li><a href="#org14fe290">Corner Cases</a></li>
+<li><a href="#org6200622">Lessons Learned for Bytecode Engineering</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org2157634" class="outline-2">
+<h2 id="org2157634">Who we are?</h2>
+<div class="outline-text-2" id="text-org2157634">
+<p>
+Team behind #<a href="https://www.jacoco.org/jacoco/index.html">JaCoCo project</a>
+</p>
+
+<ul class="org-ul">
+<li>Evgeny Mandrikov, RU/FR, <a href="https://twitter.com/_Godin_">@_Godin_</a></li>
+<li>Marc Hoffmann, DE/CH, <a href="https://twitter.com/marcandsweep">@marcandsweep</a></li>
+</ul>
+
+<p>
+our common language is bytecode
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-orgc4e4975" class="outline-2">
+<h2 id="orgc4e4975">Use Cases for Byte Code Engineering</h2>
+<div class="outline-text-2" id="text-orgc4e4975">
+<ul class="org-ul">
+<li>generation</li>
+<li>analysis</li>
+<li>modification</li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-orge84aed2" class="outline-2">
+<h2 id="orge84aed2">ASM - A Bytecode Manipulation Library</h2>
+<div class="outline-text-2" id="text-orge84aed2">
+</div>
+<div id="outline-container-org4edb269" class="outline-3">
+<h3 id="org4edb269"><span class="todo TODO">TODO</span> some diagrams</h3>
+<div class="outline-text-3" id="text-org4edb269">
+<ul class="org-ul">
+<li>Classfiles read into nested visitor events</li>
+<li>Tree can be created from events</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org6afcd12" class="outline-2">
+<h2 id="org6afcd12">Test Driven Bytecode Engineering</h2>
+<div class="outline-text-2" id="text-org6afcd12">
+<blockquote>
+<p>
+Creating or manipulating Java bytecode can be tricky when working with low-level libraries like ASM.
+Writing and maintaining tools on bytecode level should therefore always be guided by comprehensive tests.
+</p>
+
+<p>
+&#x2014; Marc Hoffmann
+</p>
+</blockquote>
+</div>
+</div>
+
+
+<div id="outline-container-orgbeffebc" class="outline-2">
+<h2 id="orgbeffebc">Generation</h2>
+</div>
+
+
+<div id="outline-container-orgca4e922" class="outline-2">
+<h2 id="C01">How to test class creation?</h2>
+<div class="outline-text-2" id="text-C01">
+</div>
+
+<div id="outline-container-org997ba36" class="outline-3">
+<h3 id="org997ba36">ClassLoader</h3>
+<div class="outline-text-3" id="text-org997ba36">
+<ul class="org-ul">
+<li>classes can be created on-the-fly in memory</li>
+<li>use JVMs bytecode verifier</li>
+<li>use JVM to execute class and verify behaviour</li>
+<li>observe/restrict dependencies</li>
+</ul>
+
+<pre class="example">
+var classLoader = new MemoryClassLoader();
+var cls = classLoader.loadClass("Adder");
+var result = MethodHandles.lookup()
+    .findStatic(cls, "add",
+        MethodType.methodType(int.class, int.class, int.class))
+    .invoke(13, 29);
+assertEquals(42, result);
+</pre>
+
+<pre class="example">
+java.lang.ClassNotFoundException: Adder
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgc74645c" class="outline-3">
+<h3 id="orgc74645c">add <code>cv.visit</code> and <code>cv.visitEnd</code></h3>
+<div class="outline-text-3" id="text-orgc74645c">
+<pre class="example">
+java.lang.NoSuchMethodException:
+  no such method: Adder.add(int,int)int/invokeStatic
+Caused by: java.lang.NoSuchMethodError: Adder.add(II)I
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org04fc2cb" class="outline-3">
+<h3 id="org04fc2cb">add <code>cv.visitMethod</code> and <code>mv.visitEnd</code></h3>
+<div class="outline-text-3" id="text-org04fc2cb">
+<pre class="example">
+java.lang.ClassFormatError:
+  Absent Code attribute in method that is not native
+  or abstract in class file Adder
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org890903e" class="outline-3">
+<h3 id="org890903e">add <code>IADD</code> and <code>IRETURN</code></h3>
+<div class="outline-text-3" id="text-org890903e">
+<pre class="example">
+java.lang.ClassFormatError:
+  Arguments can't fit into locals in class file Adder
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org8cff74b" class="outline-3">
+<h3 id="org8cff74b">add <code>mv.visitMaxs</code></h3>
+<div class="outline-text-3" id="text-org8cff74b">
+<pre class="example">
+java.lang.IllegalAccessException:
+  no such method: Adder.add(int,int)int/invokeStatic
+Caused by: java.lang.VerifyError: Operand stack underflow
+Exception Details:
+  Location:
+    Adder.add(II)I @0: iadd
+  Reason:
+    Attempt to pop empty stack.
+  Current Frame:
+    bci: @0
+    flags: { }
+    locals: { integer, integer }
+    stack: { }
+  Bytecode:
+    0000000: 60ac
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgb8fcdce" class="outline-3">
+<h3 id="orgb8fcdce">add <code>ILOAD</code></h3>
+</div>
+<div id="outline-container-orgcf175fa" class="outline-3">
+<h3 id="orgcf175fa">done?</h3>
+</div>
+<div id="outline-container-orgbeb7829" class="outline-3">
+<h3 id="orgbeb7829"><code>asm.CheckClassAdapter</code></h3>
+<div class="outline-text-3" id="text-orgbeb7829">
+<p>
+to verify usage of ASM APIs
+</p>
+
+<pre class="example">
+void create(ClassVisitor cv) { ... }
+
+create(new CheckClassAdapter(null));
+</pre>
+
+<pre class="example">
+java.lang.IllegalStateException:
+  Cannot visit instructions before visitCode has been called.
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org3ace654" class="outline-3">
+<h3 id="org3ace654">add <code>mv.visitCode</code></h3>
+</div>
+<div id="outline-container-org5f9858b" class="outline-3">
+<h3 id="org5f9858b">done</h3>
+</div>
+</div>
+
+
+<div id="outline-container-orgce9bf04" class="outline-2">
+<h2 id="C02">It is a good idea to separate implementation from API&#x2026;</h2>
+<div class="outline-text-2" id="text-C02">
+</div>
+
+<div id="outline-container-orgb8a8835" class="outline-3">
+<h3 id="orgb8a8835">especially when implementation is generated</h3>
+<div class="outline-text-3" id="text-orgb8a8835">
+<pre class="example">
+var adder = (IntBinaryOperator) cls
+    .getConstructor()
+    .newInstance();
+var result = adder.applyAsInt(13, 29);
+assertEquals(42, result);
+</pre>
+
+<pre class="example">
+java.lang.NoSuchMethodException: Adder.&lt;init&gt;()
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org7778509" class="outline-3">
+<h3 id="org7778509">for constructor add <code>visitMethod</code>, <code>visitCode</code>, <code>visitMaxs</code>, <code>visitEnd</code></h3>
+<div class="outline-text-3" id="text-org7778509">
+<pre class="example">
+java.lang.ClassFormatError:
+  Absent Code attribute in method that is not native
+  or abstract in class file Adder
+
+java.lang.IllegalArgumentException:
+  Execution can fall off the end of the code &lt;init&gt;()V
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org375b234" class="outline-3">
+<h3 id="org375b234">add <code>RETURN</code></h3>
+<div class="outline-text-3" id="text-org375b234">
+<pre class="example">
+java.lang.VerifyError:
+  Constructor must call super() or this() before return
+Exception Details:
+  Location:
+    Adder.&lt;init&gt;()V @0: return
+  Reason:
+    Error exists in the bytecode
+  Bytecode:
+    0000000: b1
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgcef1f18" class="outline-3">
+<h3 id="orgcef1f18">add <code>INVOKESPECIAL</code></h3>
+<div class="outline-text-3" id="text-orgcef1f18">
+<pre class="example">
+java.lang.VerifyError: Operand stack underflow
+Exception Details:
+  Location:
+    Adder.&lt;init&gt;()V @0: invokespecial
+  Reason:
+    Attempt to pop empty stack.
+  Current Frame:
+    bci: @0
+    flags: { flagThisUninit }
+    locals: { uninitializedThis }
+    stack: { }
+  Bytecode:
+    0000000: b700 0ab1
+
+java.lang.IllegalArgumentException:
+  Error at instruction 0:
+  Cannot pop operand off an empty stack. &lt;init&gt;()V
+00000 R  :  :     INVOKESPECIAL java/lang/Object.&lt;init&gt; ()V
+00001 ?   :     RETURN
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org2bbe397" class="outline-3">
+<h3 id="org2bbe397">add <code>ALOAD</code></h3>
+<div class="outline-text-3" id="text-org2bbe397">
+<pre class="example">
+java.lang.ClassCastException:
+  class Adder cannot be cast to
+  class java.util.function.IntBinaryOperator
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgf483de4" class="outline-3">
+<h3 id="orgf483de4">implement interface <code>IntBinaryOperator</code></h3>
+<div class="outline-text-3" id="text-orgf483de4">
+<pre class="example">
+java.lang.AbstractMethodError:
+  Receiver class Adder does not define or inherit
+  an implementation of the resolved method
+  abstract applyAsInt(II)I
+  of interface java.util.function.IntBinaryOperator.
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgff852b8" class="outline-3">
+<h3 id="orgff852b8">replace static <code>add</code> on non-static <code>applyAsInt</code></h3>
+<div class="outline-text-3" id="text-orgff852b8">
+<pre class="example">
+java.lang.ClassFormatError:
+  Arguments can't fit into locals in class file Adder
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgb1efa3f" class="outline-3">
+<h3 id="orgb1efa3f">fix <code>visitMaxs</code></h3>
+<div class="outline-text-3" id="text-orgb1efa3f">
+<pre class="example">
+java.lang.VerifyError: Bad local variable type
+Exception Details:
+  Location:
+    Adder.applyAsInt(II)I @0: iload_0
+  Reason:
+    Type 'Adder' (current frame, locals[0]) is not assignable to integer
+  Current Frame:
+    bci: @0
+    flags: { }
+    locals: { 'Adder', integer, integer }
+    stack: { }
+  Bytecode:
+    0000000: 1a1b 60ac
+
+java.lang.IllegalArgumentException:
+  Error at instruction 0:
+  Expected I, but found R applyAsInt(II)I
+00000 R I I  :  :     ILOAD 0
+00001 ?      :     ILOAD 1
+00002 ?      :     IADD
+00003 ?      :     IRETURN
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org126a3c3" class="outline-3">
+<h3 id="org126a3c3">fix <code>ILOAD</code></h3>
+</div>
+<div id="outline-container-orga9da6c3" class="outline-3">
+<h3 id="orga9da6c3">done</h3>
+</div>
+</div>
+
+
+<div id="outline-container-orgea36879" class="outline-2">
+<h2 id="C04">What if exception happens in generated code?</h2>
+<div class="outline-text-2" id="text-C04">
+<pre class="example">
+assertThrows(Exception.class, runnable::run);
+</pre>
+
+<pre class="example">
+mv.visitTypeInsn(NEW, "java/io/IOException");
+mv.visitInsn(DUP);
+mv.visitMethodInsn(INVOKESPECIAL, "java/io/IOException", "&lt;init&gt;", "()V", false);
+mv.visitInsn(ATHROW);
+</pre>
+
+<pre class="example">
+var e = assertThrows(Exception.class, runnable::run);
+e.printStackTrace();
+</pre>
+
+<pre class="example">
+java.io.IOException
+  at ExceptionRunnable.run(Unknown Source)
+</pre>
+</div>
+
+<div id="outline-container-org1adda0f" class="outline-3">
+<h3 id="org1adda0f">Can we add debug information?</h3>
+<div class="outline-text-3" id="text-org1adda0f">
+<pre class="example">
+StackTraceElement top = e.getStackTrace()[0];
+assertEquals("ExceptionRunnable", top.getClassName());
+assertEquals("run", top.getMethodName());
+assertEquals("AnyNameYouLike.c", top.getFileName());
+assertEquals(12345, top.getLineNumber());
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org398096a" class="outline-3">
+<h3 id="org398096a">add <code>cv.visitSource</code></h3>
+</div>
+<div id="outline-container-org2dcc091" class="outline-3">
+<h3 id="org2dcc091">add <code>mv.visitLineNumber</code></h3>
+</div>
+<div id="outline-container-orgefa1894" class="outline-3">
+<h3 id="orgefa1894">done</h3>
+<div class="outline-text-3" id="text-orgefa1894">
+<div class="NOTES">
+<p>
+<code>IOException</code> even can be declared
+</p>
+
+</div>
+</div>
+</div>
+</div>
+
+
+
+<div id="outline-container-org472a0bc" class="outline-2">
+<h2 id="C06">How to catch exception in generated code?</h2>
+<div class="outline-text-2" id="text-C06">
+</div>
+</div>
+
+
+<div id="outline-container-org43fc54c" class="outline-2">
+<h2 id="C20"><span class="todo TODO">TODO</span> C20: Simple Control Flow</h2>
+<div class="outline-text-2" id="text-C20">
+</div>
+</div>
+
+
+<div id="outline-container-org8735404" class="outline-2">
+<h2 id="C21">Stack Map Frames</h2>
+<div class="outline-text-2" id="text-C21">
+<blockquote>
+<p>
+A class file whose version number is 50.0 or above must be verified using the type checking rules given in this section.
+</p>
+
+<p>
+The type checker requires a list of stack map frames for each method with a Code attribute.
+</p>
+
+<p>
+&#x2014; <a href="https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-4.html#jvms-4.10.1">Java Virtual Machine Specification</a>
+</p>
+</blockquote>
+</div>
+
+<div id="outline-container-orga62efed" class="outline-3">
+<h3 id="orga62efed">change <code>V1_5</code> on <code>V11</code></h3>
+<div class="outline-text-3" id="text-orga62efed">
+<pre class="example">
+java.lang.VerifyError:
+  Expecting a stackmap frame at branch target 7
+Exception Details:
+  Location:
+    Max.applyAsInt(II)I @2: if_icmplt
+  Reason:
+    Expected stackmap frame at this location.
+  Bytecode:
+    0000000: 1b1c a100 051b ac1c ac
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org97cf9c2" class="outline-3">
+<h3 id="org97cf9c2">Java byte-code verification: when, how, or maybe to turn it off?</h3>
+<div class="outline-text-3" id="text-org97cf9c2">
+<p>
+<a href="https://2017.jpoint.ru/en/talks/java-byte-code-verification-when-how-or-maybe-to-turn-it-off/">at JPoint 2017 by Nikita Lipsky</a>
+</p>
+</div>
+</div>
+
+<div id="outline-container-orge76e146" class="outline-3">
+<h3 id="orge76e146">How to test generation?</h3>
+<div class="outline-text-3" id="text-orge76e146">
+<pre class="example">
+byte[] computeFrames(byte[] definition) {
+  var cr = new ClassReader(definition);
+  var cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
+  cr.accept(cw, 0);
+  return cw.toByteArray();
+}
+</pre>
+
+<pre class="example">
+String dump(byte[] definition) {
+  var buffer = new StringWriter();
+  var trace = new TraceClassVisitor(new PrintWriter(buffer, true));
+  new ClassReader(definition)
+    .accept(trace, ClassReader.EXPAND_FRAMES);
+  return buffer.toString();
+}
+</pre>
+
+<pre class="example">
+byte[] generated = ...;
+byte[] expected = computeFrames(generated);
+assertEquals(dump(expected), dump(generated));
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org6840e1a" class="outline-3">
+<h3 id="org6840e1a">add <code>mv.visitFrame</code></h3>
+</div>
+<div id="outline-container-org18b10c2" class="outline-3">
+<h3 id="org18b10c2">done</h3>
+</div>
+</div>
+
+
+<div id="outline-container-org9d53c29" class="outline-2">
+<h2 id="C22">Why not always <code>COMPUTE_FRAMES</code>?</h2>
+<div class="outline-text-2" id="text-C22">
+</div>
+
+<div id="outline-container-org9eb5d56" class="outline-3">
+<h3 id="org9eb5d56">try create</h3>
+<div class="outline-text-3" id="text-org9eb5d56">
+<pre class="example">
+static RuntimeException wrap(Throwable t) {
+
+  return (RuntimeException)
+    (t instanceof MyException ? t : new MyException(t));
+
+}
+</pre>
+
+<pre class="example">
+var cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES) {
+  @Override
+  protected String getCommonSuperClass(String t1, String t2) {
+    // ???
+  }
+};
+</pre>
+
+<p>
+imagine offline tool without access to class-path
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgd6c67bb" class="outline-3">
+<h3 id="orgd6c67bb">Incremental frames updates</h3>
+<div class="outline-text-3" id="text-orgd6c67bb">
+<ul class="org-ul">
+<li><code>asm.ClassVisitor.visitFrame</code> to adjust existing frames without recalculation</li>
+<li><code>asm.AnalyzerAdapter</code> to insert new ones</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org8299b3d" class="outline-2">
+<h2 id="org8299b3d">Analysis</h2>
+</div>
+
+
+<div id="outline-container-org17975f2" class="outline-2">
+<h2 id="org17975f2">Count executable source lines in a given class</h2>
+<div class="outline-text-2" id="text-org17975f2">
+</div>
+<div id="outline-container-orgc7e9575" class="outline-3">
+<h3 id="orgc7e9575">create input data using compiler</h3>
+</div>
+<div id="outline-container-org34ad922" class="outline-3">
+<h3 id="A01">load class bytes from ClassLoader</h3>
+<div class="outline-text-3" id="text-A01">
+<pre class="example">
+return classLoader
+  .getResourceAsStream(className.replace('.', '/') + ".class")
+  .readAllBytes();
+</pre>
+
+<div class="NOTES">
+<p>
+Good for tests that involve compilation
+</p>
+
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgf0b35a2" class="outline-3">
+<h3 id="orgf0b35a2">don't do this <del>at home</del> in main code!</h3>
+<div class="outline-text-3" id="text-orgf0b35a2">
+<p>
+bypasses agents
+</p>
+</div>
+</div>
+
+<div id="outline-container-org1155a12" class="outline-3">
+<h3 id="org1155a12">now we can quickly create tests</h3>
+<div class="outline-text-3" id="text-org1155a12">
+<pre class="example">
+class SimpleTarget {
+}
+</pre>
+
+<ol class="org-ol">
+<li>0</li>
+<li>1</li>
+<li>3</li>
+<li>42</li>
+</ol>
+<p>
+?
+</p>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orge4f00f9" class="outline-2">
+<h2 id="A10">Executable Comments</h2>
+<div class="outline-text-2" id="text-A10">
+<pre class="example">
+void nop() { // assertInstructions(?)
+} // assertInstructions(?)
+</pre>
+
+<ol class="org-ol">
+<li>0 , 0</li>
+<li>0 , 1</li>
+<li>1 , 0</li>
+<li>1 , 1</li>
+</ol>
+<p>
+?
+</p>
+
+<pre class="example">
+Constructor() { // assertInstructions(?)
+} // assertInstructions(?)
+</pre>
+
+<ol class="org-ol">
+<li>0 , 0</li>
+<li>0 , 1</li>
+<li>1 , 0</li>
+<li>1 , 1</li>
+</ol>
+<p>
+?
+</p>
+
+<pre class="example">
+boolean not(boolean f) {
+  return !f; // assertInstructions(?)
+}
+</pre>
+
+<ol class="org-ol">
+<li>1</li>
+<li>3</li>
+<li>6</li>
+<li>42</li>
+</ol>
+<p>
+?
+</p>
+
+<div class="NOTES">
+<p>
+6
+</p>
+
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org14fe290" class="outline-2">
+<h2 id="org14fe290">Corner Cases</h2>
+<div class="outline-text-2" id="text-org14fe290">
+</div>
+<div id="outline-container-org49ab693" class="outline-3">
+<h3 id="C53"><code>putstatic</code> for <code>final</code> field outside of static initializer</h3>
+<div class="outline-text-3" id="text-C53">
+<ul class="org-ul">
+<li>worked for many years</li>
+<li>however&#x2026;</li>
+</ul>
+
+<blockquote>
+<p>
+if the resolved field is final, it must be declared in the current class or interface, and the instruction must occur in the class or interface initialization method of the current class or interface. Otherwise, an <code>IllegalAccessError</code> is thrown.
+</p>
+
+<p>
+&#x2014; <a href="https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-6.html#jvms-6.5.putstatic">Java Virtual Machine Specification</a>
+</p>
+</blockquote>
+</div>
+</div>
+
+
+<div id="outline-container-org4d331d0" class="outline-3">
+<h3 id="org4d331d0"><a href="https://bugs.openjdk.java.net/browse/JDK-8157181">JDK-8157181</a></h3>
+<div class="outline-text-3" id="text-org4d331d0">
+<p>
+Starting with OpenJDK 9 EA b127 this condition is checked for class files with version 53 and greater.
+</p>
+
+<pre class="example">
+java.lang.IllegalAccessError:
+  Update to static final field Example.CONST attempted from
+  a different method (run) than the initializer method &lt;clinit&gt;
+</pre>
+
+<div class="NOTES">
+<ul class="org-ul">
+<li>Like in example with StackMapFrames, we can see that JVM behaves differently depending on the version of class file.</li>
+<li>However unlike StackMapFrames, this one is completely against specification and can not be created by javac.</li>
+</ul>
+
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org21f8ad9" class="outline-3">
+<h3 id="A80"><a href="https://bugs.openjdk.java.net/browse/JDK-8160928">JDK-8160928</a></h3>
+<div class="outline-text-3" id="text-A80">
+<p>
+Unparseable class from javac
+</p>
+<ul class="org-ul">
+<li>reported after JDK 8 GA (2015)</li>
+<li>resolved in JDK 9 (2017)</li>
+<li>backported to JDK 8u202 (2019)</li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-org38ec6a1" class="outline-3">
+<h3 id="C59"><a href="https://bugs.openjdk.java.net/browse/JDK-8216970">JDK-8216970</a></h3>
+<div class="outline-text-3" id="text-C59">
+<p>
+Condy causes JVM crash
+</p>
+<ul class="org-ul">
+<li>reported after JDK 11 GA</li>
+<li>resolved in JDK 12</li>
+</ul>
+
+<div class="NOTES">
+<p>
+condy is unused in JDK
+</p>
+
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org6200622" class="outline-2">
+<h2 id="org6200622">Lessons Learned for Bytecode Engineering</h2>
+<div class="outline-text-2" id="text-org6200622">
+<ul class="org-ul">
+<li>Test-first significantly speeds-up development cycles</li>
+<li>Invest in maintainable and efficient test setups</li>
+<li>Compiler, JVM, ASM and Spec may have different ideas about valid bytecode</li>
+<li>Implementations and semantic of bytecode may change with classfile versions</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: #JPoint #bytecode #TDD</p>
+<p class="date">Created: 2019-03-27 Wed 17:08</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

@@ -1,0 +1,631 @@
+#+TITLE: Let's make some 0xCAFEBABE
+# test-driven bytecode engineering
+#+AUTHOR: #JPoint #bytecode #TDD
+
+#+OPTIONS: author
+
+#+OPTIONS: toc:1
+
+# Disable Heading Numbers
+#+OPTIONS: num:nil
+
+# Disable subscripts
+#+OPTIONS: ^:nil
+
+# Do not include tags
+#+OPTIONS: tags:nil
+
+# Exclude items with tag :exclude:
+#+EXCLUDE_TAGS: exclude
+
+# Seems that speaker notes require local installation
+#+REVEAL_ROOT: https://cdn.jsdelivr.net/npm/reveal.js@3.7.0/
+#+REVEAL_THEME: simple
+#+REVEAL_TRANS: linear
+
+* Who we are?
+
+  Team behind #[[https://www.jacoco.org/jacoco/index.html][JaCoCo project]]
+
+  * Evgeny Mandrikov, RU/FR, [[https://twitter.com/_Godin_][@_Godin_]]
+  * Marc Hoffmann, DE/CH, [[https://twitter.com/marcandsweep][@marcandsweep]]
+
+  our common language is bytecode
+
+
+* Use Cases for Byte Code Engineering
+  * generation
+  * analysis
+  * modification
+
+
+* ASM - A Bytecode Manipulation Library
+
+** TODO some diagrams
+   * Classfiles read into nested visitor events
+   * Tree can be created from events
+
+
+* Test Driven Bytecode Engineering
+
+#+REVEAL: split
+
+#+BEGIN_QUOTE
+Creating or manipulating Java bytecode can be tricky when working with low-level libraries like ASM.
+Writing and maintaining tools on bytecode level should therefore always be guided by comprehensive tests.
+
+--- Marc Hoffmann
+#+END_QUOTE
+
+
+* Generation
+
+
+* How to test class creation?
+:PROPERTIES:
+:CUSTOM_ID: C01
+:END:
+
+** ClassLoader
+   * classes can be created on-the-fly in memory
+   * use JVMs bytecode verifier
+   * use JVM to execute class and verify behaviour
+   * observe/restrict dependencies
+
+#+REVEAL: split
+
+#+BEGIN_SRC
+var classLoader = new MemoryClassLoader();
+var cls = classLoader.loadClass("Adder");
+var result = MethodHandles.lookup()
+    .findStatic(cls, "add",
+        MethodType.methodType(int.class, int.class, int.class))
+    .invoke(13, 29);
+assertEquals(42, result);
+#+END_SRC
+
+#+REVEAL: split
+
+#+BEGIN_SRC
+java.lang.ClassNotFoundException: Adder
+#+END_SRC
+
+** add ~cv.visit~ and ~cv.visitEnd~
+
+#+BEGIN_SRC
+java.lang.NoSuchMethodException:
+  no such method: Adder.add(int,int)int/invokeStatic
+Caused by: java.lang.NoSuchMethodError: Adder.add(II)I
+#+END_SRC
+
+** add ~cv.visitMethod~ and ~mv.visitEnd~
+
+#+REVEAL: split
+
+#+BEGIN_SRC
+java.lang.ClassFormatError:
+  Absent Code attribute in method that is not native
+  or abstract in class file Adder
+#+END_SRC
+
+** add ~IADD~ and ~IRETURN~
+
+#+REVEAL: split
+
+#+BEGIN_SRC
+java.lang.ClassFormatError:
+  Arguments can't fit into locals in class file Adder
+#+END_SRC
+
+** add ~mv.visitMaxs~
+
+#+REVEAL: split
+
+#+BEGIN_SRC
+java.lang.IllegalAccessException:
+  no such method: Adder.add(int,int)int/invokeStatic
+Caused by: java.lang.VerifyError: Operand stack underflow
+Exception Details:
+  Location:
+    Adder.add(II)I @0: iadd
+  Reason:
+    Attempt to pop empty stack.
+  Current Frame:
+    bci: @0
+    flags: { }
+    locals: { integer, integer }
+    stack: { }
+  Bytecode:
+    0000000: 60ac
+#+END_SRC
+
+** add ~ILOAD~
+** done?
+** ~asm.CheckClassAdapter~
+   to verify usage of ASM APIs
+
+#+BEGIN_SRC
+void create(ClassVisitor cv) { ... }
+
+create(new CheckClassAdapter(null));
+#+END_SRC
+
+#+REVEAL: split
+
+#+BEGIN_SRC
+java.lang.IllegalStateException:
+  Cannot visit instructions before visitCode has been called.
+#+END_SRC
+
+** add ~mv.visitCode~
+** done
+
+
+* It is a good idea to separate implementation from API...
+:PROPERTIES:
+:CUSTOM_ID: C02
+:END:
+
+** especially when implementation is generated
+
+#+REVEAL: split
+
+#+BEGIN_SRC
+var adder = (IntBinaryOperator) cls
+    .getConstructor()
+    .newInstance();
+var result = adder.applyAsInt(13, 29);
+assertEquals(42, result);
+#+END_SRC
+
+#+REVEAL: split
+
+#+BEGIN_SRC
+java.lang.NoSuchMethodException: Adder.<init>()
+#+END_SRC
+
+** for constructor add ~visitMethod~, ~visitCode~, ~visitMaxs~, ~visitEnd~
+
+#+REVEAL: split
+
+#+BEGIN_SRC
+java.lang.ClassFormatError:
+  Absent Code attribute in method that is not native
+  or abstract in class file Adder
+
+java.lang.IllegalArgumentException:
+  Execution can fall off the end of the code <init>()V
+#+END_SRC
+
+** add ~RETURN~
+
+#+REVEAL: split
+
+#+BEGIN_SRC
+java.lang.VerifyError:
+  Constructor must call super() or this() before return
+Exception Details:
+  Location:
+    Adder.<init>()V @0: return
+  Reason:
+    Error exists in the bytecode
+  Bytecode:
+    0000000: b1
+#+END_SRC
+
+** add ~INVOKESPECIAL~
+
+#+REVEAL: split
+
+#+BEGIN_SRC
+java.lang.VerifyError: Operand stack underflow
+Exception Details:
+  Location:
+    Adder.<init>()V @0: invokespecial
+  Reason:
+    Attempt to pop empty stack.
+  Current Frame:
+    bci: @0
+    flags: { flagThisUninit }
+    locals: { uninitializedThis }
+    stack: { }
+  Bytecode:
+    0000000: b700 0ab1
+
+java.lang.IllegalArgumentException:
+  Error at instruction 0:
+  Cannot pop operand off an empty stack. <init>()V
+00000 R  :  :     INVOKESPECIAL java/lang/Object.<init> ()V
+00001 ?   :     RETURN
+#+END_SRC
+
+** add ~ALOAD~
+
+#+REVEAL: split
+
+#+BEGIN_SRC
+java.lang.ClassCastException:
+  class Adder cannot be cast to
+  class java.util.function.IntBinaryOperator
+#+END_SRC
+
+** implement interface ~IntBinaryOperator~
+
+#+REVEAL: split
+
+#+BEGIN_SRC
+java.lang.AbstractMethodError:
+  Receiver class Adder does not define or inherit
+  an implementation of the resolved method
+  abstract applyAsInt(II)I
+  of interface java.util.function.IntBinaryOperator.
+#+END_SRC
+
+** replace static ~add~ on non-static ~applyAsInt~
+
+#+REVEAL: split
+
+#+BEGIN_SRC
+java.lang.ClassFormatError:
+  Arguments can't fit into locals in class file Adder
+#+END_SRC
+
+** fix ~visitMaxs~
+
+#+REVEAL: split
+
+#+BEGIN_SRC
+java.lang.VerifyError: Bad local variable type
+Exception Details:
+  Location:
+    Adder.applyAsInt(II)I @0: iload_0
+  Reason:
+    Type 'Adder' (current frame, locals[0]) is not assignable to integer
+  Current Frame:
+    bci: @0
+    flags: { }
+    locals: { 'Adder', integer, integer }
+    stack: { }
+  Bytecode:
+    0000000: 1a1b 60ac
+
+java.lang.IllegalArgumentException:
+  Error at instruction 0:
+  Expected I, but found R applyAsInt(II)I
+00000 R I I  :  :     ILOAD 0
+00001 ?      :     ILOAD 1
+00002 ?      :     IADD
+00003 ?      :     IRETURN
+#+END_SRC
+
+** fix ~ILOAD~
+** done
+
+
+* What if exception happens in generated code?
+:PROPERTIES:
+:CUSTOM_ID: C04
+:END:
+
+#+REVEAL: split
+
+#+BEGIN_SRC
+assertThrows(Exception.class, runnable::run);
+#+END_SRC
+
+#+REVEAL: split
+
+#+BEGIN_SRC
+mv.visitTypeInsn(NEW, "java/io/IOException");
+mv.visitInsn(DUP);
+mv.visitMethodInsn(INVOKESPECIAL, "java/io/IOException", "<init>", "()V", false);
+mv.visitInsn(ATHROW);
+#+END_SRC
+
+#+REVEAL: split
+
+#+BEGIN_SRC
+var e = assertThrows(Exception.class, runnable::run);
+e.printStackTrace();
+#+END_SRC
+
+#+BEGIN_SRC
+java.io.IOException
+  at ExceptionRunnable.run(Unknown Source)
+#+END_SRC
+
+** Can we add debug information?
+
+#+REVEAL: split
+
+#+BEGIN_SRC
+StackTraceElement top = e.getStackTrace()[0];
+assertEquals("ExceptionRunnable", top.getClassName());
+assertEquals("run", top.getMethodName());
+assertEquals("AnyNameYouLike.c", top.getFileName());
+assertEquals(12345, top.getLineNumber());
+#+END_SRC
+
+** add ~cv.visitSource~
+** add ~mv.visitLineNumber~
+** done
+
+#+BEGIN_NOTES
+~IOException~ even can be declared
+#+END_NOTES
+
+
+
+* How to catch exception in generated code?
+:PROPERTIES:
+:CUSTOM_ID: C06
+:END:
+
+
+* TODO C20: Simple Control Flow
+:PROPERTIES:
+:CUSTOM_ID: C20
+:END:
+
+
+* Stack Map Frames
+:PROPERTIES:
+:CUSTOM_ID: C21
+:END:
+
+#+REVEAL: split
+
+#+BEGIN_QUOTE
+A class file whose version number is 50.0 or above must be verified using the type checking rules given in this section.
+
+The type checker requires a list of stack map frames for each method with a Code attribute.
+
+--- [[https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-4.html#jvms-4.10.1][Java Virtual Machine Specification]]
+#+END_QUOTE
+
+** change ~V1_5~ on ~V11~
+
+#+REVEAL: split
+
+#+BEGIN_SRC
+java.lang.VerifyError:
+  Expecting a stackmap frame at branch target 7
+Exception Details:
+  Location:
+    Max.applyAsInt(II)I @2: if_icmplt
+  Reason:
+    Expected stackmap frame at this location.
+  Bytecode:
+    0000000: 1b1c a100 051b ac1c ac
+#+END_SRC
+
+** Java byte-code verification: when, how, or maybe to turn it off?
+
+[[https://2017.jpoint.ru/en/talks/java-byte-code-verification-when-how-or-maybe-to-turn-it-off/][at JPoint 2017 by Nikita Lipsky]]
+
+** How to test generation?
+
+#+REVEAL: split
+
+#+BEGIN_SRC
+byte[] computeFrames(byte[] definition) {
+  var cr = new ClassReader(definition);
+  var cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
+  cr.accept(cw, 0);
+  return cw.toByteArray();
+}
+#+END_SRC
+
+#+REVEAL: split
+
+#+BEGIN_SRC
+String dump(byte[] definition) {
+  var buffer = new StringWriter();
+  var trace = new TraceClassVisitor(new PrintWriter(buffer, true));
+  new ClassReader(definition)
+    .accept(trace, ClassReader.EXPAND_FRAMES);
+  return buffer.toString();
+}
+#+END_SRC
+
+#+REVEAL: split
+
+#+BEGIN_SRC
+byte[] generated = ...;
+byte[] expected = computeFrames(generated);
+assertEquals(dump(expected), dump(generated));
+#+END_SRC
+
+** add ~mv.visitFrame~
+** done
+
+
+* Why not always ~COMPUTE_FRAMES~?
+:PROPERTIES:
+:CUSTOM_ID: C22
+:END:
+
+** try create
+
+#+BEGIN_SRC
+static RuntimeException wrap(Throwable t) {
+
+  return (RuntimeException)
+    (t instanceof MyException ? t : new MyException(t));
+
+}
+#+END_SRC
+
+#+REVEAL: split
+
+#+BEGIN_SRC
+var cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES) {
+  @Override
+  protected String getCommonSuperClass(String t1, String t2) {
+    // ???
+  }
+};
+#+END_SRC
+
+imagine offline tool without access to class-path
+
+** Incremental frames updates
+   * ~asm.ClassVisitor.visitFrame~ to adjust existing frames without recalculation
+   * ~asm.AnalyzerAdapter~ to insert new ones
+
+
+* Analysis
+
+
+* Count executable source lines in a given class
+
+** create input data using compiler
+** load class bytes from ClassLoader
+:PROPERTIES:
+:CUSTOM_ID: A01
+:END:
+
+#+REVEAL: split
+
+#+BEGIN_SRC
+return classLoader
+  .getResourceAsStream(className.replace('.', '/') + ".class")
+  .readAllBytes();
+#+END_SRC
+
+#+BEGIN_NOTES
+Good for tests that involve compilation
+#+END_NOTES
+
+** don't do this +at home+ in main code!
+bypasses agents
+
+** now we can quickly create tests
+
+#+BEGIN_SRC
+class SimpleTarget {
+}
+#+END_SRC
+
+  a. 0
+  b. 1
+  c. 3
+  d. 42
+  ?
+
+
+* Executable Comments
+:PROPERTIES:
+:CUSTOM_ID: A10
+:END:
+
+#+REVEAL: split
+
+#+BEGIN_SRC
+void nop() { // assertInstructions(?)
+} // assertInstructions(?)
+#+END_SRC
+
+  a. 0 , 0
+  b. 0 , 1
+  c. 1 , 0
+  d. 1 , 1
+  ?
+
+#+REVEAL: split
+
+#+BEGIN_SRC
+Constructor() { // assertInstructions(?)
+} // assertInstructions(?)
+#+END_SRC
+
+  a. 0 , 0
+  b. 0 , 1
+  c. 1 , 0
+  d. 1 , 1
+  ?
+
+#+REVEAL: split
+
+#+BEGIN_SRC
+boolean not(boolean f) {
+  return !f; // assertInstructions(?)
+}
+#+END_SRC
+
+  a. 1
+  b. 3
+  c. 6
+  d. 42
+  ?
+
+#+BEGIN_NOTES
+6
+#+END_NOTES
+
+
+* Corner Cases
+
+** ~putstatic~ for ~final~ field outside of static initializer
+:PROPERTIES:
+:CUSTOM_ID: C53
+:END:
+
+   * worked for many years
+   * however...
+
+#+REVEAL: split
+
+#+BEGIN_QUOTE
+if the resolved field is final, it must be declared in the current class or interface, and the instruction must occur in the class or interface initialization method of the current class or interface. Otherwise, an ~IllegalAccessError~ is thrown.
+
+--- [[https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-6.html#jvms-6.5.putstatic][Java Virtual Machine Specification]]
+#+END_QUOTE
+
+
+** [[https://bugs.openjdk.java.net/browse/JDK-8157181][JDK-8157181]]
+
+Starting with OpenJDK 9 EA b127 this condition is checked for class files with version 53 and greater.
+
+#+BEGIN_SRC
+java.lang.IllegalAccessError:
+  Update to static final field Example.CONST attempted from
+  a different method (run) than the initializer method <clinit>
+#+END_SRC
+
+#+BEGIN_NOTES
+ * Like in example with StackMapFrames, we can see that JVM behaves differently depending on the version of class file.
+ * However unlike StackMapFrames, this one is completely against specification and can not be created by javac.
+#+END_NOTES
+
+
+** [[https://bugs.openjdk.java.net/browse/JDK-8160928][JDK-8160928]]
+:PROPERTIES:
+:CUSTOM_ID: A80
+:END:
+
+   Unparseable class from javac
+   * reported after JDK 8 GA (2015)
+   * resolved in JDK 9 (2017)
+   * backported to JDK 8u202 (2019)
+
+
+** [[https://bugs.openjdk.java.net/browse/JDK-8216970][JDK-8216970]]
+:PROPERTIES:
+:CUSTOM_ID: C59
+:END:
+
+   Condy causes JVM crash
+   * reported after JDK 11 GA
+   * resolved in JDK 12
+
+#+BEGIN_NOTES
+condy is unused in JDK
+#+END_NOTES
+
+
+* Lessons Learned for Bytecode Engineering
+  * Test-first significantly speeds-up development cycles
+  * Invest in maintainable and efficient test setups
+  * Compiler, JVM, ASM and Spec may have different ideas about valid bytecode
+  * Implementations and semantic of bytecode may change with classfile versions

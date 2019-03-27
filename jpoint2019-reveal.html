@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Let's make some 0xCAFEBABE</title>
+<meta name="author" content="#JPoint #bytecode #TDD"/>
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@3.7.0/css/reveal.css"/>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@3.7.0/css/theme/simple.css" id="theme"/>
+
+
+<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+<script>
+    if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'https://cdn.jsdelivr.net/npm/reveal.js@3.7.0/css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    }
+</script>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+<section id="sec-title-slide">
+<h1 class="title">Let's make some 0xCAFEBABE</h1><h2 class="author">#JPoint #bytecode #TDD</h2><p class="date">Created: 2019-03-27 Wed 17:07</p>
+</section>
+<section id="table-of-contents-section">
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#/slide-org7cff2a7">Who we are?</a></li>
+<li><a href="#/slide-org0f7284c">Use Cases for Byte Code Engineering</a></li>
+<li><a href="#/slide-org68de03d">ASM - A Bytecode Manipulation Library</a></li>
+<li><a href="#/slide-org7eab4f3">Test Driven Bytecode Engineering</a></li>
+<li><a href="#/slide-org854c8c7">Generation</a></li>
+<li><a href="#/slide-C01">How to test class creation?</a></li>
+<li><a href="#/slide-C02">It is a good idea to separate implementation from API&#x2026;</a></li>
+<li><a href="#/slide-C04">What if exception happens in generated code?</a></li>
+<li><a href="#/slide-C06">How to catch exception in generated code?</a></li>
+<li><a href="#/slide-C20"><span class="todo TODO">TODO</span> C20: Simple Control Flow</a></li>
+<li><a href="#/slide-C21">Stack Map Frames</a></li>
+<li><a href="#/slide-C22">Why not always <code>COMPUTE_FRAMES</code>?</a></li>
+<li><a href="#/slide-org499b66c">Analysis</a></li>
+<li><a href="#/slide-org43c67d4">Count executable source lines in a given class</a></li>
+<li><a href="#/slide-A10">Executable Comments</a></li>
+<li><a href="#/slide-org111415e">Corner Cases</a></li>
+<li><a href="#/slide-org7dc89c4">Lessons Learned for Bytecode Engineering</a></li>
+</ul>
+</div>
+</div>
+</section>
+
+<section>
+<section id="slide-org7cff2a7">
+<h2 id="org7cff2a7">Who we are?</h2>
+<p>
+Team behind #<a href="https://www.jacoco.org/jacoco/index.html">JaCoCo project</a>
+</p>
+
+<ul>
+<li>Evgeny Mandrikov, RU/FR, <a href="https://twitter.com/_Godin_">@_Godin_</a></li>
+<li>Marc Hoffmann, DE/CH, <a href="https://twitter.com/marcandsweep">@marcandsweep</a></li>
+
+</ul>
+
+<p>
+our common language is bytecode
+</p>
+
+
+</section>
+</section>
+<section>
+<section id="slide-org0f7284c">
+<h2 id="org0f7284c">Use Cases for Byte Code Engineering</h2>
+<ul>
+<li>generation</li>
+<li>analysis</li>
+<li>modification</li>
+
+</ul>
+
+
+</section>
+</section>
+<section>
+<section id="slide-org68de03d">
+<h2 id="org68de03d">ASM - A Bytecode Manipulation Library</h2>
+<div class="outline-text-2" id="text-org68de03d">
+</div>
+</section>
+<section id="slide-orgbfde8d9">
+<h3 id="orgbfde8d9"><span class="todo TODO">TODO</span> some diagrams</h3>
+<ul>
+<li>Classfiles read into nested visitor events</li>
+<li>Tree can be created from events</li>
+
+</ul>
+
+
+</section>
+</section>
+<section>
+<section id="slide-org7eab4f3">
+<h2 id="org7eab4f3">Test Driven Bytecode Engineering</h2>
+</section>
+<section >
+
+<blockquote>
+<p>
+Creating or manipulating Java bytecode can be tricky when working with low-level libraries like ASM.
+Writing and maintaining tools on bytecode level should therefore always be guided by comprehensive tests.
+</p>
+
+<p>
+&#x2014; Marc Hoffmann
+</p>
+</blockquote>
+
+
+</section>
+</section>
+<section>
+<section id="slide-org854c8c7">
+<h2 id="org854c8c7">Generation</h2>
+
+
+</section>
+</section>
+<section>
+<section id="slide-C01">
+<h2 id="C01">How to test class creation?</h2>
+</section>
+<section id="slide-org8d2b68a">
+<h3 id="org8d2b68a">ClassLoader</h3>
+<ul>
+<li>classes can be created on-the-fly in memory</li>
+<li>use JVMs bytecode verifier</li>
+<li>use JVM to execute class and verify behaviour</li>
+<li>observe/restrict dependencies</li>
+
+</ul>
+
+</section>
+<section >
+
+<pre  class="example">
+var classLoader = new MemoryClassLoader();
+var cls = classLoader.loadClass("Adder");
+var result = MethodHandles.lookup()
+    .findStatic(cls, "add",
+        MethodType.methodType(int.class, int.class, int.class))
+    .invoke(13, 29);
+assertEquals(42, result);
+</pre>
+
+</section>
+<section >
+
+<pre  class="example">
+java.lang.ClassNotFoundException: Adder
+</pre>
+
+</section>
+<section id="slide-orgfc5a775">
+<h3 id="orgfc5a775">add <code>cv.visit</code> and <code>cv.visitEnd</code></h3>
+<pre  class="example">
+java.lang.NoSuchMethodException:
+  no such method: Adder.add(int,int)int/invokeStatic
+Caused by: java.lang.NoSuchMethodError: Adder.add(II)I
+</pre>
+
+</section>
+<section id="slide-orge2b31a3">
+<h3 id="orge2b31a3">add <code>cv.visitMethod</code> and <code>mv.visitEnd</code></h3>
+</section>
+<section >
+
+<pre  class="example">
+java.lang.ClassFormatError:
+  Absent Code attribute in method that is not native
+  or abstract in class file Adder
+</pre>
+
+</section>
+<section id="slide-org7ceb5c9">
+<h3 id="org7ceb5c9">add <code>IADD</code> and <code>IRETURN</code></h3>
+</section>
+<section >
+
+<pre  class="example">
+java.lang.ClassFormatError:
+  Arguments can't fit into locals in class file Adder
+</pre>
+
+</section>
+<section id="slide-org680de2b">
+<h3 id="org680de2b">add <code>mv.visitMaxs</code></h3>
+</section>
+<section >
+
+<pre  class="example">
+java.lang.IllegalAccessException:
+  no such method: Adder.add(int,int)int/invokeStatic
+Caused by: java.lang.VerifyError: Operand stack underflow
+Exception Details:
+  Location:
+    Adder.add(II)I @0: iadd
+  Reason:
+    Attempt to pop empty stack.
+  Current Frame:
+    bci: @0
+    flags: { }
+    locals: { integer, integer }
+    stack: { }
+  Bytecode:
+    0000000: 60ac
+</pre>
+
+</section>
+<section id="slide-orgd471a5b">
+<h3 id="orgd471a5b">add <code>ILOAD</code></h3>
+</section>
+<section id="slide-orgf87eb2e">
+<h3 id="orgf87eb2e">done?</h3>
+</section>
+<section id="slide-org23f508c">
+<h3 id="org23f508c"><code>asm.CheckClassAdapter</code></h3>
+<p>
+to verify usage of ASM APIs
+</p>
+
+<pre  class="example">
+void create(ClassVisitor cv) { ... }
+
+create(new CheckClassAdapter(null));
+</pre>
+
+</section>
+<section >
+
+<pre  class="example">
+java.lang.IllegalStateException:
+  Cannot visit instructions before visitCode has been called.
+</pre>
+
+</section>
+<section id="slide-orgacdff60">
+<h3 id="orgacdff60">add <code>mv.visitCode</code></h3>
+</section>
+<section id="slide-org9a1091b">
+<h3 id="org9a1091b">done</h3>
+
+
+</section>
+</section>
+<section>
+<section id="slide-C02">
+<h2 id="C02">It is a good idea to separate implementation from API&#x2026;</h2>
+</section>
+<section id="slide-orgc5cffe9">
+<h3 id="orgc5cffe9">especially when implementation is generated</h3>
+</section>
+<section >
+
+<pre  class="example">
+var adder = (IntBinaryOperator) cls
+    .getConstructor()
+    .newInstance();
+var result = adder.applyAsInt(13, 29);
+assertEquals(42, result);
+</pre>
+
+</section>
+<section >
+
+<pre  class="example">
+java.lang.NoSuchMethodException: Adder.&lt;init&gt;()
+</pre>
+
+</section>
+<section id="slide-org28aa897">
+<h3 id="org28aa897">for constructor add <code>visitMethod</code>, <code>visitCode</code>, <code>visitMaxs</code>, <code>visitEnd</code></h3>
+</section>
+<section >
+
+<pre  class="example">
+java.lang.ClassFormatError:
+  Absent Code attribute in method that is not native
+  or abstract in class file Adder
+
+java.lang.IllegalArgumentException:
+  Execution can fall off the end of the code &lt;init&gt;()V
+</pre>
+
+</section>
+<section id="slide-org161bf1f">
+<h3 id="org161bf1f">add <code>RETURN</code></h3>
+</section>
+<section >
+
+<pre  class="example">
+java.lang.VerifyError:
+  Constructor must call super() or this() before return
+Exception Details:
+  Location:
+    Adder.&lt;init&gt;()V @0: return
+  Reason:
+    Error exists in the bytecode
+  Bytecode:
+    0000000: b1
+</pre>
+
+</section>
+<section id="slide-org605d7ca">
+<h3 id="org605d7ca">add <code>INVOKESPECIAL</code></h3>
+</section>
+<section >
+
+<pre  class="example">
+java.lang.VerifyError: Operand stack underflow
+Exception Details:
+  Location:
+    Adder.&lt;init&gt;()V @0: invokespecial
+  Reason:
+    Attempt to pop empty stack.
+  Current Frame:
+    bci: @0
+    flags: { flagThisUninit }
+    locals: { uninitializedThis }
+    stack: { }
+  Bytecode:
+    0000000: b700 0ab1
+
+java.lang.IllegalArgumentException:
+  Error at instruction 0:
+  Cannot pop operand off an empty stack. &lt;init&gt;()V
+00000 R  :  :     INVOKESPECIAL java/lang/Object.&lt;init&gt; ()V
+00001 ?   :     RETURN
+</pre>
+
+</section>
+<section id="slide-org133333f">
+<h3 id="org133333f">add <code>ALOAD</code></h3>
+</section>
+<section >
+
+<pre  class="example">
+java.lang.ClassCastException:
+  class Adder cannot be cast to
+  class java.util.function.IntBinaryOperator
+</pre>
+
+</section>
+<section id="slide-orga0d9076">
+<h3 id="orga0d9076">implement interface <code>IntBinaryOperator</code></h3>
+</section>
+<section >
+
+<pre  class="example">
+java.lang.AbstractMethodError:
+  Receiver class Adder does not define or inherit
+  an implementation of the resolved method
+  abstract applyAsInt(II)I
+  of interface java.util.function.IntBinaryOperator.
+</pre>
+
+</section>
+<section id="slide-org7dbc480">
+<h3 id="org7dbc480">replace static <code>add</code> on non-static <code>applyAsInt</code></h3>
+</section>
+<section >
+
+<pre  class="example">
+java.lang.ClassFormatError:
+  Arguments can't fit into locals in class file Adder
+</pre>
+
+</section>
+<section id="slide-org61afc09">
+<h3 id="org61afc09">fix <code>visitMaxs</code></h3>
+</section>
+<section >
+
+<pre  class="example">
+java.lang.VerifyError: Bad local variable type
+Exception Details:
+  Location:
+    Adder.applyAsInt(II)I @0: iload_0
+  Reason:
+    Type 'Adder' (current frame, locals[0]) is not assignable to integer
+  Current Frame:
+    bci: @0
+    flags: { }
+    locals: { 'Adder', integer, integer }
+    stack: { }
+  Bytecode:
+    0000000: 1a1b 60ac
+
+java.lang.IllegalArgumentException:
+  Error at instruction 0:
+  Expected I, but found R applyAsInt(II)I
+00000 R I I  :  :     ILOAD 0
+00001 ?      :     ILOAD 1
+00002 ?      :     IADD
+00003 ?      :     IRETURN
+</pre>
+
+</section>
+<section id="slide-orgf57a0cc">
+<h3 id="orgf57a0cc">fix <code>ILOAD</code></h3>
+</section>
+<section id="slide-org0e5465b">
+<h3 id="org0e5465b">done</h3>
+
+
+</section>
+</section>
+<section>
+<section id="slide-C04">
+<h2 id="C04">What if exception happens in generated code?</h2>
+</section>
+<section >
+
+<pre  class="example">
+assertThrows(Exception.class, runnable::run);
+</pre>
+
+</section>
+<section >
+
+<pre  class="example">
+mv.visitTypeInsn(NEW, "java/io/IOException");
+mv.visitInsn(DUP);
+mv.visitMethodInsn(INVOKESPECIAL, "java/io/IOException", "&lt;init&gt;", "()V", false);
+mv.visitInsn(ATHROW);
+</pre>
+
+</section>
+<section >
+
+<pre  class="example">
+var e = assertThrows(Exception.class, runnable::run);
+e.printStackTrace();
+</pre>
+
+<pre  class="example">
+java.io.IOException
+  at ExceptionRunnable.run(Unknown Source)
+</pre>
+
+</section>
+<section id="slide-orga62fe93">
+<h3 id="orga62fe93">Can we add debug information?</h3>
+</section>
+<section >
+
+<pre  class="example">
+StackTraceElement top = e.getStackTrace()[0];
+assertEquals("ExceptionRunnable", top.getClassName());
+assertEquals("run", top.getMethodName());
+assertEquals("AnyNameYouLike.c", top.getFileName());
+assertEquals(12345, top.getLineNumber());
+</pre>
+
+</section>
+<section id="slide-org6ee1f21">
+<h3 id="org6ee1f21">add <code>cv.visitSource</code></h3>
+</section>
+<section id="slide-org95c2009">
+<h3 id="org95c2009">add <code>mv.visitLineNumber</code></h3>
+</section>
+<section id="slide-org29ef2f7">
+<h3 id="org29ef2f7">done</h3>
+<aside class="notes">
+<p>
+<code>IOException</code> even can be declared
+</p>
+
+</aside>
+
+
+
+</section>
+</section>
+<section>
+<section id="slide-C06">
+<h2 id="C06">How to catch exception in generated code?</h2>
+
+
+</section>
+</section>
+<section>
+<section id="slide-C20">
+<h2 id="C20"><span class="todo TODO">TODO</span> C20: Simple Control Flow</h2>
+
+
+</section>
+</section>
+<section>
+<section id="slide-C21">
+<h2 id="C21">Stack Map Frames</h2>
+</section>
+<section >
+
+<blockquote>
+<p>
+A class file whose version number is 50.0 or above must be verified using the type checking rules given in this section.
+</p>
+
+<p>
+The type checker requires a list of stack map frames for each method with a Code attribute.
+</p>
+
+<p>
+&#x2014; <a href="https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-4.html#jvms-4.10.1">Java Virtual Machine Specification</a>
+</p>
+</blockquote>
+
+</section>
+<section id="slide-orgb7c25ac">
+<h3 id="orgb7c25ac">change <code>V1_5</code> on <code>V11</code></h3>
+</section>
+<section >
+
+<pre  class="example">
+java.lang.VerifyError:
+  Expecting a stackmap frame at branch target 7
+Exception Details:
+  Location:
+    Max.applyAsInt(II)I @2: if_icmplt
+  Reason:
+    Expected stackmap frame at this location.
+  Bytecode:
+    0000000: 1b1c a100 051b ac1c ac
+</pre>
+
+</section>
+<section id="slide-org6bb6824">
+<h3 id="org6bb6824">Java byte-code verification: when, how, or maybe to turn it off?</h3>
+<p>
+<a href="https://2017.jpoint.ru/en/talks/java-byte-code-verification-when-how-or-maybe-to-turn-it-off/">at JPoint 2017 by Nikita Lipsky</a>
+</p>
+
+</section>
+<section id="slide-org72822cc">
+<h3 id="org72822cc">How to test generation?</h3>
+</section>
+<section >
+
+<pre  class="example">
+byte[] computeFrames(byte[] definition) {
+  var cr = new ClassReader(definition);
+  var cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
+  cr.accept(cw, 0);
+  return cw.toByteArray();
+}
+</pre>
+
+</section>
+<section >
+
+<pre  class="example">
+String dump(byte[] definition) {
+  var buffer = new StringWriter();
+  var trace = new TraceClassVisitor(new PrintWriter(buffer, true));
+  new ClassReader(definition)
+    .accept(trace, ClassReader.EXPAND_FRAMES);
+  return buffer.toString();
+}
+</pre>
+
+</section>
+<section >
+
+<pre  class="example">
+byte[] generated = ...;
+byte[] expected = computeFrames(generated);
+assertEquals(dump(expected), dump(generated));
+</pre>
+
+</section>
+<section id="slide-org204e499">
+<h3 id="org204e499">add <code>mv.visitFrame</code></h3>
+</section>
+<section id="slide-orgcb1e991">
+<h3 id="orgcb1e991">done</h3>
+
+
+</section>
+</section>
+<section>
+<section id="slide-C22">
+<h2 id="C22">Why not always <code>COMPUTE_FRAMES</code>?</h2>
+</section>
+<section id="slide-orgcbb32f0">
+<h3 id="orgcbb32f0">try create</h3>
+<pre  class="example">
+static RuntimeException wrap(Throwable t) {
+
+  return (RuntimeException)
+    (t instanceof MyException ? t : new MyException(t));
+
+}
+</pre>
+
+</section>
+<section >
+
+<pre  class="example">
+var cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES) {
+  @Override
+  protected String getCommonSuperClass(String t1, String t2) {
+    // ???
+  }
+};
+</pre>
+
+<p>
+imagine offline tool without access to class-path
+</p>
+
+</section>
+<section id="slide-org62850c7">
+<h3 id="org62850c7">Incremental frames updates</h3>
+<ul>
+<li><code>asm.ClassVisitor.visitFrame</code> to adjust existing frames without recalculation</li>
+<li><code>asm.AnalyzerAdapter</code> to insert new ones</li>
+
+</ul>
+
+
+</section>
+</section>
+<section>
+<section id="slide-org499b66c">
+<h2 id="org499b66c">Analysis</h2>
+
+
+</section>
+</section>
+<section>
+<section id="slide-org43c67d4">
+<h2 id="org43c67d4">Count executable source lines in a given class</h2>
+<div class="outline-text-2" id="text-org43c67d4">
+</div>
+</section>
+<section id="slide-org0bd9885">
+<h3 id="org0bd9885">create input data using compiler</h3>
+</section>
+<section id="slide-A01">
+<h3 id="A01">load class bytes from ClassLoader</h3>
+</section>
+<section >
+
+<pre  class="example">
+return classLoader
+  .getResourceAsStream(className.replace('.', '/') + ".class")
+  .readAllBytes();
+</pre>
+
+<aside class="notes">
+<p>
+Good for tests that involve compilation
+</p>
+
+</aside>
+
+</section>
+<section id="slide-orgd2253d4">
+<h3 id="orgd2253d4">don't do this <del>at home</del> in main code!</h3>
+<p>
+bypasses agents
+</p>
+
+</section>
+<section id="slide-org3dc6d4b">
+<h3 id="org3dc6d4b">now we can quickly create tests</h3>
+<pre  class="example">
+class SimpleTarget {
+}
+</pre>
+
+<ol>
+<li>0</li>
+<li>1</li>
+<li>3</li>
+<li>42</li>
+
+</ol>
+<p>
+?
+</p>
+
+
+</section>
+</section>
+<section>
+<section id="slide-A10">
+<h2 id="A10">Executable Comments</h2>
+</section>
+<section >
+
+<pre  class="example">
+void nop() { // assertInstructions(?)
+} // assertInstructions(?)
+</pre>
+
+<ol>
+<li>0 , 0</li>
+<li>0 , 1</li>
+<li>1 , 0</li>
+<li>1 , 1</li>
+
+</ol>
+<p>
+?
+</p>
+
+</section>
+<section >
+
+<pre  class="example">
+Constructor() { // assertInstructions(?)
+} // assertInstructions(?)
+</pre>
+
+<ol>
+<li>0 , 0</li>
+<li>0 , 1</li>
+<li>1 , 0</li>
+<li>1 , 1</li>
+
+</ol>
+<p>
+?
+</p>
+
+</section>
+<section >
+
+<pre  class="example">
+boolean not(boolean f) {
+  return !f; // assertInstructions(?)
+}
+</pre>
+
+<ol>
+<li>1</li>
+<li>3</li>
+<li>6</li>
+<li>42</li>
+
+</ol>
+<p>
+?
+</p>
+
+<aside class="notes">
+<p>
+6
+</p>
+
+</aside>
+
+
+</section>
+</section>
+<section>
+<section id="slide-org111415e">
+<h2 id="org111415e">Corner Cases</h2>
+<div class="outline-text-2" id="text-org111415e">
+</div>
+</section>
+<section id="slide-C53">
+<h3 id="C53"><code>putstatic</code> for <code>final</code> field outside of static initializer</h3>
+<ul>
+<li>worked for many years</li>
+<li>however&#x2026;</li>
+
+</ul>
+
+</section>
+<section >
+
+<blockquote>
+<p>
+if the resolved field is final, it must be declared in the current class or interface, and the instruction must occur in the class or interface initialization method of the current class or interface. Otherwise, an <code>IllegalAccessError</code> is thrown.
+</p>
+
+<p>
+&#x2014; <a href="https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-6.html#jvms-6.5.putstatic">Java Virtual Machine Specification</a>
+</p>
+</blockquote>
+
+
+</section>
+<section id="slide-org701b435">
+<h3 id="org701b435"><a href="https://bugs.openjdk.java.net/browse/JDK-8157181">JDK-8157181</a></h3>
+<p>
+Starting with OpenJDK 9 EA b127 this condition is checked for class files with version 53 and greater.
+</p>
+
+<pre  class="example">
+java.lang.IllegalAccessError:
+  Update to static final field Example.CONST attempted from
+  a different method (run) than the initializer method &lt;clinit&gt;
+</pre>
+
+<aside class="notes">
+<ul>
+<li>Like in example with StackMapFrames, we can see that JVM behaves differently depending on the version of class file.</li>
+<li>However unlike StackMapFrames, this one is completely against specification and can not be created by javac.</li>
+
+</ul>
+
+</aside>
+
+
+</section>
+<section id="slide-A80">
+<h3 id="A80"><a href="https://bugs.openjdk.java.net/browse/JDK-8160928">JDK-8160928</a></h3>
+<p>
+Unparseable class from javac
+</p>
+<ul>
+<li>reported after JDK 8 GA (2015)</li>
+<li>resolved in JDK 9 (2017)</li>
+<li>backported to JDK 8u202 (2019)</li>
+
+</ul>
+
+
+</section>
+<section id="slide-C59">
+<h3 id="C59"><a href="https://bugs.openjdk.java.net/browse/JDK-8216970">JDK-8216970</a></h3>
+<p>
+Condy causes JVM crash
+</p>
+<ul>
+<li>reported after JDK 11 GA</li>
+<li>resolved in JDK 12</li>
+
+</ul>
+
+<aside class="notes">
+<p>
+condy is unused in JDK
+</p>
+
+</aside>
+
+
+</section>
+</section>
+<section>
+<section id="slide-org7dc89c4">
+<h2 id="org7dc89c4">Lessons Learned for Bytecode Engineering</h2>
+<ul>
+<li>Test-first significantly speeds-up development cycles</li>
+<li>Invest in maintainable and efficient test setups</li>
+<li>Compiler, JVM, ASM and Spec may have different ideas about valid bytecode</li>
+<li>Implementations and semantic of bytecode may change with classfile versions</li>
+
+</ul>
+</section>
+</section>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@3.7.0/lib/js/head.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@3.7.0/js/reveal.js"></script>
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: true,
+progress: true,
+history: false,
+center: true,
+slideNumber: 'c',
+rollingLinks: false,
+keyboard: true,
+mouseWheel: false,
+fragmentInURL: false,
+pdfSeparateFragments: true,
+
+overview: true,
+
+theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+transition: Reveal.getQueryHash().transition || 'linear', // default/cube/page/concave/zoom/linear/fade/none
+transitionSpeed: 'default',
+multiplex: {
+    secret: '', // null if client
+    id: '', // id, obtained from socket.io server
+    url: '' // Location of socket.io server
+},
+
+// Optional libraries used to extend on reveal.js
+dependencies: [
+ { src: 'https://cdn.jsdelivr.net/npm/reveal.js@3.7.0/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+ { src: 'https://cdn.jsdelivr.net/npm/reveal.js@3.7.0/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+ { src: 'https://cdn.jsdelivr.net/npm/reveal.js@3.7.0/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+ { src: 'https://cdn.jsdelivr.net/npm/reveal.js@3.7.0/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+ { src: 'https://cdn.jsdelivr.net/npm/reveal.js@3.7.0/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }]
+});
+</script>
+</body>
+</html>
