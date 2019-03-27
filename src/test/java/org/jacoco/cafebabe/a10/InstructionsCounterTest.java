@@ -20,6 +20,11 @@ public class InstructionsCounterTest {
 		run(SimpleTarget.class);
 	}
 
+	@Test
+	void complex_target() throws Exception {
+		run(ComplexTarget.class);
+	}
+
 	void run(Class<?> target) throws Exception {
 		byte[] definition = ClassDefinition.get(target);
 		instructions = InstructionsCounter.getInstructionsPerLine(definition);
