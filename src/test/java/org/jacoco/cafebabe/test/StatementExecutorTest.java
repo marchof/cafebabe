@@ -45,7 +45,7 @@ public class StatementExecutorTest {
 	void should_preserve_Errors() {
 		var executor = new StatementExecutor(this);
 
-		Throwable ex = assertThrows(AssertionFailedError.class, () -> executor.visitInvocation("ctx", "target3"));
+		var ex = assertThrows(AssertionFailedError.class, () -> executor.visitInvocation("ctx", "target3"));
 		assertEquals("Original AssertionError.", ex.getMessage());
 	}
 
@@ -53,7 +53,7 @@ public class StatementExecutorTest {
 	void should_preserve_RuntimeExceptions() {
 		var executor = new StatementExecutor(this);
 
-		Throwable ex = assertThrows(NoSuchElementException.class, () -> executor.visitInvocation("ctx", "target4"));
+		var ex = assertThrows(NoSuchElementException.class, () -> executor.visitInvocation("ctx", "target4"));
 		assertEquals("Original AssertionError.", ex.getMessage());
 	}
 
@@ -61,7 +61,7 @@ public class StatementExecutorTest {
 	void should_wrap_other_exceptions() {
 		var executor = new StatementExecutor(this);
 
-		Throwable ex = assertThrows(RuntimeException.class, () -> executor.visitInvocation("ctx", "target5"));
+		var ex = assertThrows(RuntimeException.class, () -> executor.visitInvocation("ctx", "target5"));
 		assertEquals("Invocation error (ctx)", ex.getMessage());
 		assertEquals(IOException.class, ex.getCause().getClass());
 	}
@@ -70,7 +70,7 @@ public class StatementExecutorTest {
 	void should_throw_RuntimeException_when_method_cannot_be_invoked() {
 		var executor = new StatementExecutor(this);
 
-		Throwable ex = assertThrows(RuntimeException.class, () -> executor.visitInvocation("ctx", "doesNotExist"));
+		var ex = assertThrows(RuntimeException.class, () -> executor.visitInvocation("ctx", "doesNotExist"));
 		assertEquals("Invocation error (ctx)", ex.getMessage());
 		assertEquals(NoSuchMethodException.class, ex.getCause().getClass());
 	}

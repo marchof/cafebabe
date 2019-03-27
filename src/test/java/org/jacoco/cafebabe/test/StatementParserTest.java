@@ -91,7 +91,7 @@ public class StatementParserTest {
 
 	@Test
 	void should_give_context_info_when_parsing_fails() throws IOException {
-		IOException ex = assertThrows(IOException.class, () -> StatementParser.parse("bad", visitor, "Foo.java:32"));
+		var ex = assertThrows(IOException.class, () -> StatementParser.parse("bad", visitor, "Foo.java:32"));
 		assertEquals("Invalid syntax (Foo.java:32)", ex.getMessage());
 	}
 

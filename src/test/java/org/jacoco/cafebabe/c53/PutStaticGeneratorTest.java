@@ -38,7 +38,7 @@ class PutStaticGeneratorTest {
 		cl.add(PutStaticGenerator.create(V9));
 		Runnable runnable = cl.newInstance("Example");
 
-		IllegalAccessError thrown = assertThrows(IllegalAccessError.class, runnable::run);
+		var thrown = assertThrows(IllegalAccessError.class, runnable::run);
 		assertEquals("Update to static final field Example.CONST attempted from a different method (run) than the initializer method <clinit> ", thrown.getMessage());
 	}
 

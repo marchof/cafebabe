@@ -26,7 +26,7 @@ class ExceptionGeneratorTest {
 
 		Runnable runnable = cl.newInstance("ExceptionRunnable");
 
-		Exception ex = assertThrows(Exception.class, runnable::run);
+		var ex = assertThrows(Exception.class, runnable::run);
 
 		StackTraceElement top = ex.getStackTrace()[0];
 		assertEquals("ExceptionRunnable", top.getClassName());
