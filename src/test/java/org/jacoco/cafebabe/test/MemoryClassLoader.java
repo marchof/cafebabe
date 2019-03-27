@@ -38,7 +38,7 @@ public class MemoryClassLoader extends ClassLoader {
 	 */
 	public <T> T newInstance(String name) throws ReflectiveOperationException {
 		@SuppressWarnings("unchecked")
-		Class<T> clazz = (Class<T>) loadClass(name);
+		var clazz = (Class<T>) loadClass(name);
 		return clazz.getConstructor().newInstance();
 	}
 

@@ -35,7 +35,7 @@ class GeneratorTest {
 		MethodHandle wrapper = MethodHandles.lookup()
 				.findStatic(cls, "wrap", MethodType.methodType(RuntimeException.class, Throwable.class));
 
-		RuntimeException e = (RuntimeException) MethodHandles.lookup()
+		var e = (RuntimeException) MethodHandles.lookup()
 				.findConstructor(cls, MethodType.methodType(void.class, Throwable.class))
 				.invoke((Object) null);
 		assertEquals(e, wrapper.invoke(e), "should not wrap");
