@@ -20,6 +20,7 @@ c02 Interface Implementation     | [source](src/test/java/org/jacoco/cafebabe/c0
 c03 Instance Field               | [source](src/test/java/org/jacoco/cafebabe/c03) | [source](src/main/java/org/jacoco/cafebabe/c03)
 c04 Exception with Debug Info    | [source](src/test/java/org/jacoco/cafebabe/c04) | [source](src/main/java/org/jacoco/cafebabe/c04)
 c05 Undeclared Checked Exception | [source](src/test/java/org/jacoco/cafebabe/c05) | [source](src/main/java/org/jacoco/cafebabe/c05)
+c06 Exception Handling           | [source](src/test/java/org/jacoco/cafebabe/c06) | [source](src/main/java/org/jacoco/cafebabe/c06)
 c12 Invoke Interface             | [source](src/test/java/org/jacoco/cafebabe/c12) | [source](src/main/java/org/jacoco/cafebabe/c12)
 c14 Invoke Dynamic               | [source](src/test/java/org/jacoco/cafebabe/c14) | [source](src/main/java/org/jacoco/cafebabe/c14)
 c20 Simple Control Flow          | [source](src/test/java/org/jacoco/cafebabe/c20) | [source](src/main/java/org/jacoco/cafebabe/c20)
