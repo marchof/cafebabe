@@ -27,7 +27,7 @@ class AdderGeneratorTest {
 		cl.add(AdderGenerator.create());
 
 		Class<?> clazz = cl.loadClass("Adder");
-		var result = (int) MethodHandles.lookup()
+		var result = MethodHandles.lookup()
 				.findStatic(clazz, "add", MethodType.methodType(int.class, int.class, int.class)) //
 				.invoke(13, 29);
 
