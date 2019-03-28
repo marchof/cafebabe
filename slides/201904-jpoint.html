@@ -46,18 +46,20 @@ class: center, middle
 
 Evgeny Mandrikov, Marc Hoffmann
 
-JPoint 2019
+\#JPoint #TDD #Bytecode
 
 Moscow, 06.04.2019
 
 
 ---
 # Who we are?
+## Team behind #[JaCoCo project](https://www.jacoco.org/jacoco)
 
-* Evgeny Mandrikov, RU/FR, @_Godin_
-* Marc Hoffmann, DE/CH, @marcandsweep
+* Evgeny Mandrikov, RU/FR, [@\_Godin\_](https://twitter.com/_Godin_)
+* Marc Hoffmann, DE/CH, [@marcandsweep](https://twitter.com/marcandsweep)
 
---> Our common language is bytecode
+???
+Our common language is bytecode
 
 ---
 # Use Cases for Byte Code Engineering
@@ -74,16 +76,177 @@ Moscow, 06.04.2019
 ---
 # Test Driven Bytecode Engineering
 
-* TODO
+> Creating or manipulating Java bytecode can be tricky when working with low-level libraries like ASM.
+> Writing and maintaining tools on bytecode level should therefore always be guided by comprehensive tests.
 
-Some Code
+---
+# Generation
+
+---
+# How to test class creation?
+
+---
+# What if exception happens in generated code?
+
+---
+# How to catch exception in generated code?
+
+---
+# Stack Map Frames
+
+--
+Java Virtual Machine Specification:
+> A class file whose version number is 50.0 or above must be verified using the type checking rules given in this section.
+>
+> The type checker requires a list of stack map frames for each method with a Code attribute.
+
+--
+
+## Java byte-code verification: when, how, or maybe to turn it off?
+at JPoint 2017 by Nikita Lipsky
+
+--
+
+## How to test?
+
+---
+# Why not always COMPUTE_FRAMES?
+
+--
+try create
 
 ```java
-module org.hello {
-      exports org.hello;
-      requires org.output;
+class MyException extends RuntimeException {
+
+  MyException(Throwable t) {
+    super(t);
+  }
+
+  static RuntimeException wrap(Throwable t) {
+    return (RuntimeException)
+      (t instanceof MyException ? t : new MyException(t));
+  }
+
 }
 ```
+
+---
+# Analysis
+
+--
+## Count executable source lines in a given class
+
+--
+```java
+class SimpleTarget {
+}
+```
+
+* 0
+* 1
+* 3
+* 42
+
+?
+
+---
+# Analysis
+## Executable Comments
+
+--
+```java
+void nop() { // assertInstructions(?)
+} // assertInstructions(?)
+```
+
+* 0 , 0
+* 0 , 1
+* 1 , 0
+* 1 , 1
+
+?
+
+---
+# Analysis
+## Executable Comments
+
+--
+```java
+Constructor() { // assertInstructions(?)
+} // assertInstructions(?)
+```
+
+* 0 , 0
+* 0 , 1
+* 1 , 0
+* 1 , 1
+
+?
+
+---
+# Analysis
+## Executable Comments
+
+--
+```java
+boolean not(boolean f) {
+  return !f; // assertInstructions(?)
+}
+```
+
+* 1
+* 3
+* 6
+* 42
+
+?
+
+---
+# [JDK-815718](https://bugs.openjdk.java.net/browse/JDK-8157181)
+
+--
+## `putstatic` for `final` field outside of static initializer
+
+--
+* worked for many years
+
+--
+* however...
+
+--
+Java Virtual Machine Specification:
+
+> if the resolved field is final, it must be declared in the current class or interface,
+> and the instruction must occur in the class or interface initialization method of the current class or interface.
+> Otherwise, an IllegalAccessError is thrown.
+
+???
+* Line in example with StackMapFrames, we can see that JVM behaves differently depending on the version of class file.
+* However unlike StackMapFrames, this one is completely against specification, can not be created by javac.
+
+---
+# [JDK-8160928](https://bugs.openjdk.java.net/browse/JDK-8160928)
+
+--
+## Unparseable class from javac
+
+--
+* reported after JDK 8 GA (2015)
+* resolved in JDK 9 (2017)
+* backported to JDK 8u202 (2019)
+
+---
+# [JDK-8216970](https://bugs.openjdk.java.net/browse/JDK-8216970)
+
+--
+## Condy causes JVM crash
+
+--
+* reported after JDK 11 GA
+* resolved in JDK 12
+
+???
+condy is unused in JDK
 
 ---
 # Lessons Learned for Bytecode Engineering
