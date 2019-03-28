@@ -36,7 +36,7 @@ class CheckedExceptionGenerator {
 		cv.visit(V11, ACC_PUBLIC, "CheckedExceptionRunnable", null, "java/lang/Object",
 				new String[] { "java/lang/Runnable" });
 
-		GeneratorSupport.defaultInit(cv);
+		GeneratorSupport.addConstructor(cv);
 
 		MethodVisitor mv = cv.visitMethod(ACC_PUBLIC, "run", "()V", null, null);
 		mv.visitCode();

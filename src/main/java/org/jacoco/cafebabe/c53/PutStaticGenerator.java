@@ -33,7 +33,7 @@ class PutStaticGenerator {
 
 		cv.visit(version, ACC_PUBLIC, "Example", null, "java/lang/Object", new String[]{"java/lang/Runnable"});
 
-		GeneratorSupport.defaultInit(cv);
+		GeneratorSupport.addConstructor(cv);
 
 		cv.visitField(ACC_PUBLIC | ACC_STATIC | ACC_FINAL, "CONST", "I", null, 42);
 

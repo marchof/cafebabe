@@ -48,7 +48,7 @@ class ExceptionGenerator {
 		cv.visit(V11, ACC_PUBLIC, "ExceptionRunnable", null, "java/lang/Object", new String[] { "java/lang/Runnable" });
 		cv.visitSource("AnyNameYouLike.c", null);
 
-		GeneratorSupport.defaultInit(cv);
+		GeneratorSupport.addConstructor(cv);
 
 		MethodVisitor mv = cv.visitMethod(ACC_PUBLIC, "run", "()V", null, null);
 		mv.visitCode();

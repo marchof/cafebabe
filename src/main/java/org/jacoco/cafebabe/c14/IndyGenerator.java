@@ -42,7 +42,7 @@ public class IndyGenerator {
 
 		cv.visit(V11, ACC_PUBLIC, "Indy", null, "java/lang/Object", new String[]{"java/util/function/Supplier"});
 
-		GeneratorSupport.defaultInit(cv);
+		GeneratorSupport.addConstructor(cv);
 
 		MethodVisitor mv = cv.visitMethod(ACC_PUBLIC, "get", "()Ljava/lang/Object;", null, null);
 		mv.visitCode();

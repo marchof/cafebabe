@@ -29,7 +29,7 @@ class ExceptionHandlerGenerator {
 		cv.visit(V1_5, ACC_PUBLIC, "ExceptionHandler", null, "java/lang/Object",
 				new String[]{"java/util/function/Predicate"});
 
-		GeneratorSupport.defaultInit(cv);
+		GeneratorSupport.addConstructor(cv);
 
 		MethodVisitor mv = cv.visitMethod(ACC_PUBLIC, "test", "(Ljava/lang/Object;)Z", null, null);
 		mv.visitCode();

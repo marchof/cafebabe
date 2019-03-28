@@ -31,7 +31,7 @@ class CondyCrashGenerator {
 	public static void create(ClassVisitor cv) {
 		cv.visit(V11, ACC_PUBLIC, "CondyCrash", null, "java/lang/Object", null);
 
-		GeneratorSupport.defaultInit(cv);
+		GeneratorSupport.addConstructor(cv);
 
 		MethodVisitor mv = cv.visitMethod(ACC_PUBLIC | ACC_STATIC, "main", "([Ljava/lang/String;)V", null, null);
 		mv.visitCode();

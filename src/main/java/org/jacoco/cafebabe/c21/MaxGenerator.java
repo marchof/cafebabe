@@ -40,7 +40,7 @@ class MaxGenerator {
 		cv.visit(V11, ACC_PUBLIC, "Max", null, "java/lang/Object",
 				new String[] { "java/util/function/IntBinaryOperator" });
 
-		GeneratorSupport.defaultInit(cv);
+		GeneratorSupport.addConstructor(cv);
 
 		MethodVisitor mv = cv.visitMethod(ACC_PUBLIC, "applyAsInt", "(II)I", null, null);
 		mv.visitCode();

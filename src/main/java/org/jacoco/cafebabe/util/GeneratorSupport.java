@@ -17,7 +17,7 @@ public class GeneratorSupport {
 	 * Emits a public, empty default constructor for a subclass of
 	 * <code>java.lang.Object</code>.
 	 */
-	public static void defaultInit(ClassVisitor cv) {
+	public static void addConstructor(ClassVisitor cv) {
 		MethodVisitor mv = cv.visitMethod(ACC_PUBLIC, "<init>", "()V", null, null);
 		mv.visitCode();
 		mv.visitVarInsn(ALOAD, 0);

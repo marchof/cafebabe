@@ -46,7 +46,7 @@ class CounterGenerator {
 
 		cv.visitField(ACC_PRIVATE, "counter", "I", null, 0);
 
-		GeneratorSupport.defaultInit(cv);
+		GeneratorSupport.addConstructor(cv);
 
 		MethodVisitor mv = cv.visitMethod(ACC_PUBLIC, "getAsInt", "()I", null, null);
 		mv.visitCode();
