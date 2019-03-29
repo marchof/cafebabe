@@ -176,6 +176,35 @@ class SimpleTarget {
 # Analysis
 ## Executable Comments
 
+```java
+class SimpleTarget { // assertInstructions(1)
+} // assertInstructions(0)
+```
+
+---
+# Analysis
+## Executable Comments
+
+```java
+class JaCoCoTarget {
+  static void main(String[] args) {
+    missedBranch(true);
+  }
+
+  static void missedBranch(boolean f) {
+    if (f) { // assertCovered(1, 1)
+      nop(); // assertCovered()
+    } else {
+      nop(); // assertNotCovered()
+    }
+  }
+}
+```
+
+---
+# Analysis
+## Executable Comments
+
 --
 ```java
 void nop() { // assertInstructions(?)
