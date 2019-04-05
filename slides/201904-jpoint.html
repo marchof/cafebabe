@@ -170,29 +170,8 @@ class MyException extends RuntimeException {
 # Analysis
 
 --
-## Count executable source lines in a given class
+## Example: Count executable source lines in a given class
 
---
-```java
-class SimpleTarget {
-}
-```
-
-* 0
-* 1
-* 2
-* 42
-
-?
-
----
-# Analysis
-## Executable Comments
-
-```java
-class SimpleTarget { // assertInstructions(1)
-} // assertInstructions(0)
-```
 
 ---
 # Analysis
@@ -214,57 +193,6 @@ class JaCoCoTarget {
 }
 ```
 
----
-# Analysis
-## Executable Comments
-
---
-```java
-void nop() { // assertInstructions(?)
-} // assertInstructions(?)
-```
-
-* 0 , 0
-* 0 , 1
-* 1 , 0
-* 1 , 1
-
-?
-
----
-# Analysis
-## Executable Comments
-
---
-```java
-Constructor() { // assertInstructions(?)
-} // assertInstructions(?)
-```
-
-* 0 , 0
-* 0 , 1
-* 1 , 0
-* 1 , 1
-
-?
-
----
-# Analysis
-## Executable Comments
-
---
-```java
-boolean not(boolean f) {
-  return !f; // assertInstructions(?)
-}
-```
-
-* 1
-* 3
-* 6
-* 42
-
-?
 
 ---
 # [JDK-815718](https://bugs.openjdk.java.net/browse/JDK-8157181)
