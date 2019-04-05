@@ -193,53 +193,21 @@ class JaCoCoTarget {
 }
 ```
 
-
 ---
-# [JDK-815718](https://bugs.openjdk.java.net/browse/JDK-8157181)
+# The JDK May Play Tricks on You
 
 --
-## `putstatic` for `final` field outside of static initializer
+* VM behaviour depends on class file version
 
 --
-* worked for many years
+* VM executes invalid class files ([JDK-815718](https://bugs.openjdk.java.net/browse/JDK-8157181))
 
 --
-* however...
+* javac produces inconsistent class files ([JDK-8160928](https://bugs.openjdk.java.net/browse/JDK-8160928))
 
 --
-[Java Virtual Machine Specification](https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-6.html#jvms-6.5.putstatic):
+* VM might crash on valid class files ([JDK-8216970](https://bugs.openjdk.java.net/browse/JDK-8216970))
 
-> if the resolved field is final, it must be declared in the current class or interface,
-> and the instruction must occur in the class or interface initialization method of the current class or interface.
-> Otherwise, an IllegalAccessError is thrown.
-
-???
-* Line in example with StackMapFrames, we can see that JVM behaves differently depending on the version of class file.
-* However unlike StackMapFrames, this one is completely against specification, can not be created by javac.
-
----
-# [JDK-8160928](https://bugs.openjdk.java.net/browse/JDK-8160928)
-
---
-## Unparseable class from javac
-
---
-* reported after JDK 8 GA (2015)
-* resolved in JDK 9 (2017)
-* backported to JDK 8u202 (2019)
-
----
-# [JDK-8216970](https://bugs.openjdk.java.net/browse/JDK-8216970)
-
---
-## Condy causes JVM crash
-
---
-* reported after JDK 11 GA
-* resolved in JDK 12
-
-???
-condy is unused in JDK
 
 ---
 # Lessons Learned for Bytecode Engineering
