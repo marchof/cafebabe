@@ -1,6 +1,5 @@
 package org.jacoco.cafebabe.a10;
 
-import static org.objectweb.asm.Opcodes.ASM7;
 import static org.objectweb.asm.tree.AbstractInsnNode.FRAME;
 import static org.objectweb.asm.tree.AbstractInsnNode.LABEL;
 import static org.objectweb.asm.tree.AbstractInsnNode.LINE;
@@ -9,8 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.LineNumberNode;
 import org.objectweb.asm.tree.MethodNode;
 
@@ -24,44 +22,29 @@ import org.objectweb.asm.tree.MethodNode;
 class InstructionsCounter {
 
 	static Map<Integer, Integer> getInstructionsPerLine(byte[] definition) {
-		var reader = new ClassReader(definition);
+		ClassNode classNode = new ClassNode();
+		new ClassReader(definition).accept(classNode, 0);
 
 		Map<Integer, Integer> instructions = new HashMap<>();
-		reader.accept(new CountingClassVisitor(instructions), 0);
+		classNode.methods.forEach(m -> count(m, instructions));
 
 		return instructions;
 	}
 
-	private static final class CountingClassVisitor extends ClassVisitor {
-		private final Map<Integer, Integer> instructionCounters;
-
-		private CountingClassVisitor(Map<Integer, Integer> instructionCounters) {
-			super(ASM7);
-			this.instructionCounters = instructionCounters;
-		}
-
-		@Override
-		public MethodVisitor visitMethod(int access, String name, String descriptor, String signature,
-				String[] exceptions) {
-			return new MethodNode(ASM7, access, name, descriptor, signature, exceptions) {
-				@Override
-				public void visitEnd() {
-					int currentLine = 0;
-					for (var i = instructions.getFirst(); i != null; i = i.getNext()) {
-						switch (i.getType()) {
-						case LINE:
-							currentLine = ((LineNumberNode) i).line;
-							break;
-						case FRAME:
-						case LABEL:
-							// not actually instructions
-							break;
-						default:
-							instructionCounters.merge(currentLine, 1, (a, b) -> a + b);
-						}
-					}
-				}
-			};
+	private static void count(MethodNode m, Map<Integer, Integer> instructions) {
+		int currentLine = 0;
+		for (var i = m.instructions.getFirst(); i != null; i = i.getNext()) {
+			switch (i.getType()) {
+			case LINE:
+				currentLine = ((LineNumberNode) i).line;
+				break;
+			case FRAME:
+			case LABEL:
+				// not actually instructions
+				break;
+			default:
+				instructions.merge(currentLine, 1, (a, b) -> a + b);
+			}
 		}
 	}
 
