@@ -36,6 +36,14 @@
         background: #e7e8e2;
         border-radius: 5px;
       }
+      .pull-left {
+        float: left;
+        width: 50%;
+      }
+      .pull-right {
+        float: right;
+        width: 50%;
+      }
       .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
     </style>
   </head>
@@ -105,7 +113,7 @@ Reverse Engineering | &#9679; |
 ---
 # Stack [Frames](https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-2.html#jvms-2.6)
 
-Data stack in method execution:
+Data stack for method execution:
 
 * Operand stack (push/pop)
 * Local variables (indexed access)
@@ -133,47 +141,34 @@ Fixed, predefined stack sizes:
 >
 > The type checker requires a list of stack map frames for each method with a Code attribute.
 
---
-
-## Java byte-code verification: when, how, or maybe to turn it off?
-[at JPoint 2017 by Nikita Lipsky](https://2017.jpoint.ru/en/talks/java-byte-code-verification-when-how-or-maybe-to-turn-it-off/)
-
 
 ---
 # Stack Map Frames
-
+.pull-left[
 ![Frame with Linear Sequence](diagrams/frame-linear.svg)
+]
 
 ---
 # Stack Map Frames
-
+.pull-left[
 ![Frame with Merged Sequence](diagrams/frame-merge.svg)
+]
 
 ---
 # Stack Map Frames
-
+.pull-left[
 ![Stack Map Frame](diagrams/frame-smf.svg)
+]
+.pull-right[
+[Java byte-code verification by Nikita Lipsky at JPoint 2017](https://2017.jpoint.ru/en/talks/java-byte-code-verification-when-how-or-maybe-to-turn-it-off/)
+]
 
 ---
 # Why not always COMPUTE_FRAMES?
 
---
-try create
-
-```java
-class MyException extends RuntimeException {
-
-  MyException(Throwable t) {
-    super(t);
-  }
-
-  static RuntimeException wrap(Throwable t) {
-    return (RuntimeException)
-      (t instanceof MyException ? t : new MyException(t));
-  }
-
-}
-```
+* Class hierarchy required to calculate stack map frames from scratch
+* Parent types might not (yet) be available
+* Loading parent types might cause undesired sideffects 
 
 ---
 # Incremental frames updates
